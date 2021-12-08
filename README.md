@@ -16,3 +16,30 @@ Shovel is a provided wrapper around tunnel that simplifies the most common usage
 The only syntax is ``shovel <deck_file>``, which launches an interactive review session.
 Shovel is not designed to follow the UNIX philosophy; it's just an example of
 a practical application of tunnel commands.
+
+### Documentation of individual tunnel commands
+
+#### format_deck
+``format_deck`` will format a deck file for you. More specifically, it will create
+required fields for cards and renumber their IDs to stay in order. ``format_deck``
+also checks for invalid lines, printing an error if it finds one.
+
+``format_deck`` can either take a deck filename as an argument or the deck 
+contents as standard input. It will print to standard output.
+
+```sh
+~ $ cat deck
+a	b
+c	d
+~ $ tunnel format_deck deck
+1	a	b	2.5	0	2021-04-01
+2	c	d	2.5	0	2021-04-01
+~ $ tunnel format_deck < deck
+1	a	b	2.5	0	2021-04-01
+2	c	d	2.5	0	2021-04-01
+~ $ echo e >> deck
+~ $ tunnel format_deck deck
+Invalid line at index 3: e
+~ $ echo $? # Prints the exit code
+1
+```
