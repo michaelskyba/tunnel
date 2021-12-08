@@ -9,3 +9,10 @@ such as a cleaner, more maintainable codebase and an automated test system
 ## Status
 Currently, tunnel is unusable. Use scripture for the time being and check
 back for updates soon.
+
+## Usage
+### shovel
+Shovel is a provided wrapper around tunnel that simplifies the most common usage.
+The only syntax is ``shovel <deck_file>``, which launches an interactive review session.
+Shovel is not designed to follow the UNIX philosophy; it's just an example of
+a practical application of tunnel commands.
