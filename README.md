@@ -5,3 +5,7 @@ wrote in Shell. My goal is for tunnel to be faster than scripture and to follow
 the UNIX philosophy better. Being written in Go should bring other benefits,
 such as a cleaner, more maintainable codebase and an automated test system
 (without an added dependency).
+
+## Status
+Currently, tunnel is unusable. Use scripture for the time being and check
+back for updates soon.
