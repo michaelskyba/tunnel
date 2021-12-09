@@ -185,3 +185,43 @@ Error: no line 4 in deck
 The syntax here is ``tunnel <front|back> <card line number> <deck filename>``.
 ``front`` will print the first tab-separated value in the card, which is the front
 of the card, and ``back`` will print the second tab-separated value, which is the back.
+
+#### review
+```sh
+~ $ date
+Thu Dec  9 05:45:13 PM EST 2021
+~ $ cat letters
+a	b	0	2.5	0	2021-04-01
+c	d	5	3	131.554	2021-11-21
+e
+~ $ tunnel due letters
+1
+~ $ tunnel review 1 4 letters
+~ $ cat letters
+a	b	1	2.5	1	2021-12-09
+c	d	5	3	131.554	2021-11-21
+e
+~ $ tunnel review 2 2 letters
+Error: card 2 is not due for review.
+~ $ tunnel review 3 5 letters
+Error: line 3 is not a valid card
+~ $ tunnel review 4 0 letters
+Error: no line 4 in deck
+```
+``review``'s syntax is ``tunnel review <card line number> <review grade> <deck filename>``.
+This will update the card's SM-2 fields in accordance to the SM-2 algorithm. To see
+which cards you need to review, use ``due``.
+
+The grades' meanings are as follows:
+```
+0: "Total blackout", complete failure to recall the information.
+1: Incorrect response, but upon seeing the correct answer it felt familiar.
+2: Incorrect response, but upon seeing the correct answer it seemed easy to remember.
+3: Correct response, but required significant difficulty to recall.
+4: Correct response, after some hesitation.
+5: Correct response with perfect recall.
+```
+(https://en.wikipedia.org/wiki/SuperMemo#Description_of_SM-2_algorithm)
+
+If you need to review a set of cards outside of their regular schedule, copy them into
+a new, temporary deck and study that one.
