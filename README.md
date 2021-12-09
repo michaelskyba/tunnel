@@ -21,7 +21,7 @@ that shovel is too limited to fit your needs.
 
 ### Tutorial
 The basic tunnel "process" looks like this:
-1. Install
+#### 1. Install
 ```sh
 ~ $ git clone https://github.com/michaelskyba/tunnel
 ~ $ cd tunnel
@@ -29,16 +29,16 @@ The basic tunnel "process" looks like this:
 ~/tunnel $ su -c "cp tunnel /usr/local/bin/"
 ```
 
-2. Create a deck file
+#### 2. Create a deck file
 Read the [deck file](#deck-file) section to understand the syntax. ``example_deck``,
 an example deck file, is provided, which I will use here.
 
-3. Use ``new_cards`` to format new cards
+#### 3. Use ``new_cards`` to format new cards
 ```sh
 ~/tunnel $ tunnel new_cards deck
 ```
 
-4. Use ``due`` to determine which cards need to be reviewed
+#### 4. Use ``due`` to determine which cards need to be reviewed
 ```sh
 ~/tunnel $ tunnel due deck
 1
@@ -46,7 +46,7 @@ an example deck file, is provided, which I will use here.
 4
 ```
 
-5. Use ``review`` to review each due card, using ``front`` and ``back`` to see
+#### 5. Use ``review`` to review each due card, using ``front`` and ``back`` to see
 the fronts and backs of the respective cards
 ```sh
 ~/tunnel $ tunnel front 1 deck
