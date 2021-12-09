@@ -90,6 +90,11 @@ Au
 ~/tunnel $ tunnel due deck
 ~/tunnel $ # Reviews are done for this deck!
 ```
+That's it! Understand, though, that these tunnel commands are never supposed
+to be run manually like I showed here. This "tutorial" section is meant to
+give you a general understanding of the order, so that making your own wrapper
+(like shovel, but more fitted to your needs) will have less friction. Read the
+documentation for each of the commands involved to learn more.
 
 ### Deck file
 A deck file is a file containing a deck of cards, each of which will be reviewed.
