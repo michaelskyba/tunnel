@@ -129,7 +129,7 @@ these values will be updated. If you want to modify a card's front or backside,
 feel free to edit the first two values (front and back), but never touch
 any of the others (e.g. repetition number).
 
-### Documentation of individual tunnel commands
+### Description of individual tunnel commands
 
 #### new_cards
 ```sh
