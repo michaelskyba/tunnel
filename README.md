@@ -19,6 +19,35 @@ just an example of a practical application of tunnel commands. If you choose to
 use shovel, you don't have to worry about anything else, at least until you decide
 that shovel is too limited to fit your needs.
 
+### Tutorial
+The basic tunnel "process" looks like this:
+1. Install
+```sh
+~ $ git clone https://github.com/michaelskyba/tunnel
+~ $ cd tunnel
+~/tunnel $ go build tunnel.go
+~/tunnel $ su -c "cp tunnel /usr/local/bin/"
+```
+
+2. Create a deck file
+Read the [deck file](#deck_file) section to understand the syntax. ``example_deck``,
+an example deck file, is provided, which I will use here.
+
+3. Use ``new_cards`` to format new cards
+```sh
+~/tunnel $ tunnel new_cards deck
+```
+
+4. Use ``due`` to determine which cards need to be reviewed
+```sh
+~/tunnel $ tunnel due deck
+1
+3
+4
+```
+
+5. TODO
+
 ### Documentation of individual tunnel commands
 
 #### new_cards
