@@ -66,9 +66,9 @@ Symbol: Carbon
 C
 ~/tunnel $ tunnel review 4 5 deck
 ```
-Repeat this process with ``due`` until there are no more cards to complete.
-You'll have to review a card multiple times if you score below 4, so don't
-just use ``due`` once.
+Repeat this process with ``due`` after each set of reviews until there are no
+more due cards. You'll have to review a card multiple times if you score below
+4, so you can't just use ``due`` once.
 ```sh
 ~/tunnel $ tunnel due deck
 1
@@ -100,12 +100,12 @@ is the only type of card, unlike e.g. Anki, which has many card types. You can
 emulate other card types easily, though. For instance, I have a macro in my text
 editor that converts
 ```
-[Cellular respiration] happens in [every cell's mitochondria]
+[Cellular respiration] happens in [every cell's mitochondrion]
 ```
 to
 ```
-[] happens in [every cell's mitochondria]	Cellular respiration
-[Cellular respiration] happens in []	every cell's mitochondria
+[] happens in [every cell's mitochondrion]	Cellular respiration
+[Cellular respiration] happens in []	every cell's mitochondrion
 ```
 , thereby creating a sort of cloze-deletion card type.
 
@@ -123,14 +123,8 @@ any of the others (e.g. repetition number).
 
 ### Description of individual tunnel commands
 
-#### new_cards
+#### ``new_cards``
 ```sh
-~ $ cat deck
-a	b
-c	d
-~ $ tunnel new_cards < deck
-a	b	0	2.5	0	2021-04-01
-c	d	0	2.5	0	2021-04-01
 ~ $ cat deck
 a	b
 c	d
@@ -144,7 +138,7 @@ c	d	0	2.5	0	2021-04-01
 the file as to add default SM-2 values to new card lines. Specifically, it
 appends ``0	2.5	0	2021-04-01``.
 
-#### due
+#### ``due``
 ```sh
 ~ $ date
 Thu Dec  9 03:04:51 PM EST 2021
@@ -167,7 +161,7 @@ should provide to ``front``, ``back``, and ``review``. If you add new cards
 after ``due``ing but before reviewing, you should re-run ``due``, since the old
 numbers may be inaccurate now.
 
-#### front and back
+#### ``front`` and ``back``
 ```sh
 ~ $ cat letters
 a	b	1	2.46	1	2021-12-08
@@ -186,7 +180,7 @@ The syntax here is ``tunnel <front|back> <card line number> <deck filename>``.
 ``front`` will print the first tab-separated value in the card, which is the front
 of the card, and ``back`` will print the second tab-separated value, which is the back.
 
-#### review
+#### ``review``
 ```sh
 ~ $ date
 Thu Dec  9 05:45:13 PM EST 2021
