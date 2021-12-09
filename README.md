@@ -19,27 +19,25 @@ a practical application of tunnel commands.
 
 ### Documentation of individual tunnel commands
 
-#### format_deck
-``format_deck`` will format a deck file for you. More specifically, it will create
-required fields for cards and renumber their IDs to stay in order. ``format_deck``
-also checks for invalid lines, printing an error if it finds one.
-
-``format_deck`` can either take a deck filename as an argument or the deck 
-contents as standard input. It will print to standard output.
-
+#### new_cards
 ```sh
 ~ $ cat deck
 a	b
 c	d
-~ $ tunnel format_deck deck
-1	a	b	2.5	0	2021-04-01
-2	c	d	2.5	0	2021-04-01
-~ $ tunnel format_deck < deck
-1	a	b	2.5	0	2021-04-01
-2	c	d	2.5	0	2021-04-01
-~ $ echo e >> deck
-~ $ tunnel format_deck deck
-Invalid line at index 3: e
-~ $ echo $? # Prints the exit code
-1
+~ $ tunnel new_cards < deck
+a	b	0	2.5	0	2021-04-01
+c	d	0	2.5	0	2021-04-01
+~ $ cat deck
+a	b
+c	d
+~ $ tunnel new_cards deck
+~ $ cat deck
+a	b	0	2.5	0	2021-04-01
+c	d	0	2.5	0	2021-04-01
 ```
+
+``new_cards`` will add default SM-2 values to new card lines. Specifically, it
+appends ``0	2.5	0	2021-04-01``. ``new_cards`` can either take a 
+deck filename as an argument or the deck contents as stdin. If you use an 
+argument, tunnel will update the specified file. If you use stdin, the 
+formatted version will instead be sent to stdout.
