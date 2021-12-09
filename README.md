@@ -46,7 +46,50 @@ an example deck file, is provided, which I will use here.
 4
 ```
 
-5. TODO
+5. Use ``review`` to review each due card, using ``front`` and ``back`` to see
+the fronts and backs of the respective cards
+```sh
+~/tunnel $ tunnel front 1 deck
+Symbol: Gold
+~/tunnel $ # The user can't remember
+~/tunnel $ tunnel back 1 deck
+Au
+~/tunnel $ # Now the answer seems obvious and familiar ("Oh, right, it's Au!")
+~/tunnel $ tunnel review 1 2 deck
+```
+```sh
+~/tunnel $ tunnel front 3 deck
+Symbol: Silver
+~/tunnel $ # The user thinks for a second and then remembers
+~/tunnel $ tunnel back 3 deck
+Ag
+~/tunnel $ tunnel review 3 4 deck
+```
+```sh
+~/tunnel $ tunnel front 4 deck
+Symbol: Carbon
+~/tunnel $ # The user remembered instantly
+~/tunnel $ tunnel back 4 deck
+C
+~/tunnel $ tunnel review 4 5 deck
+```
+Repeat this process with ``due`` until there are no more cards to complete.
+You'll have to review a card multiple times if you score below 4, so don't
+just use ``due`` once.
+```sh
+~/tunnel $ tunnel due deck
+1
+```
+```sh
+~/tunnel $ tunnel front 1 deck
+Symbol: Gold
+~/tunnel $ # The user remembered instantly
+~/tunnel $ tunnel back 1 deck
+Au
+~/tunnel $ tunnel review 1 5 deck
+~/tunnel $ tunnel due deck
+~/tunnel $ # Reviews are done for this deck!
+```
 
 ### Deck file
 A deck file is a file containing a deck of cards, each of which will be reviewed.
