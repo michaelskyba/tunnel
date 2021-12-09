@@ -12,10 +12,12 @@ back for updates soon.
 
 ## Usage
 ### shovel
-Shovel is a provided wrapper around tunnel that simplifies the most common usage.
-The only syntax is ``shovel <deck_file>``, which launches an interactive review session.
-Shovel is not designed to follow the UNIX philosophy; it's just an example of
-a practical application of tunnel commands.
+Shovel is a provided wrapper around tunnel that simplifies the most common
+usage. The only syntax is ``shovel <deck_file>``, which launches an interactive
+review session. Shovel is not designed to follow the UNIX philosophy; it's
+just an example of a practical application of tunnel commands. If you choose to
+use shovel, you don't have to worry about anything else, at least until you decide
+that shovel is too limited to fit your needs.
 
 ### Documentation of individual tunnel commands
 
