@@ -166,3 +166,22 @@ date. The numbers spit out are the positions of each card line, which you
 should provide to ``front``, ``back``, and ``review``. If you add new cards
 after ``due``ing but before reviewing, you should re-run ``due``, since the old
 numbers may be inaccurate now.
+
+#### front and back
+```sh
+~ $ cat letters
+a	b	1	2.46	1	2021-12-08
+c	d
+e
+~ $ tunnel front 1 letters
+a
+~ $ tunnel back 2 letters
+d
+~ $ tunnel front 3 letters
+Error: line 3 is not a valid card
+~ $ tunnel back 4 letters
+Error: no line 4 in deck
+```
+The syntax here is ``tunnel <front|back> <card line number> <deck filename>``.
+``front`` will print the first tab-separated value in the card, which is the front
+of the card, and ``back`` will print the second tab-separated value, which is the back.
