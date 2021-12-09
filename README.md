@@ -1,5 +1,5 @@
 # tunnel
-Tunnel is a simple SM-2 implementation. It's a Go rewrite of
+Tunnel is / simple SM-2 implementation. It's a Go rewrite/remake of
 [scripture](https://github.com/michaelskyba/scripture), a similar project I
 wrote in Shell. My goal is for tunnel to be faster than scripture and to follow 
 the UNIX philosophy better. Being written in Go should bring other benefits,
@@ -30,7 +30,7 @@ The basic tunnel "process" looks like this:
 ```
 
 2. Create a deck file
-Read the [deck file](#deck_file) section to understand the syntax. ``example_deck``,
+Read the [deck file](#deck-file) section to understand the syntax. ``example_deck``,
 an example deck file, is provided, which I will use here.
 
 3. Use ``new_cards`` to format new cards
@@ -47,31 +47,6 @@ an example deck file, is provided, which I will use here.
 ```
 
 5. TODO
-
-### Documentation of individual tunnel commands
-
-#### new_cards
-```sh
-~ $ cat deck
-a	b
-c	d
-~ $ tunnel new_cards < deck
-a	b	0	2.5	0	2021-04-01
-c	d	0	2.5	0	2021-04-01
-~ $ cat deck
-a	b
-c	d
-~ $ tunnel new_cards deck
-~ $ cat deck
-a	b	0	2.5	0	2021-04-01
-c	d	0	2.5	0	2021-04-01
-```
-
-``new_cards`` will add default SM-2 values to new card lines. Specifically, it
-appends ``0	2.5	0	2021-04-01``. ``new_cards`` can either take a 
-deck filename as an argument or the deck contents as stdin. If you use an 
-argument, tunnel will update the specified file. If you use stdin, the 
-formatted version will instead be sent to stdout.
 
 ### Deck file
 A deck file is a file containing a deck of cards, each of which will be reviewed.
@@ -104,3 +79,28 @@ cards, the date is set to an arbitrary past date. As you review your cards,
 these values will be updated. If you want to modify a card's front or backside,
 feel free to edit the first two values (front and back), but never touch
 any of the others (e.g. repetition number).
+
+### Documentation of individual tunnel commands
+
+#### new_cards
+```sh
+~ $ cat deck
+a	b
+c	d
+~ $ tunnel new_cards < deck
+a	b	0	2.5	0	2021-04-01
+c	d	0	2.5	0	2021-04-01
+~ $ cat deck
+a	b
+c	d
+~ $ tunnel new_cards deck
+~ $ cat deck
+a	b	0	2.5	0	2021-04-01
+c	d	0	2.5	0	2021-04-01
+```
+
+``new_cards`` will add default SM-2 values to new card lines. Specifically, it
+appends ``0	2.5	0	2021-04-01``. ``new_cards`` can either take a 
+deck filename as an argument or the deck contents as stdin. If you use an 
+argument, tunnel will update the specified file. If you use stdin, the 
+formatted version will instead be sent to stdout.
