@@ -148,11 +148,9 @@ a	b	0	2.5	0	2021-04-01
 c	d	0	2.5	0	2021-04-01
 ```
 
-``new_cards`` will add default SM-2 values to new card lines. Specifically, it
-appends ``0	2.5	0	2021-04-01``. ``new_cards`` can either take a 
-deck filename as an argument or the deck contents as stdin. If you use an 
-argument, tunnel will update the specified file. If you use stdin, the 
-formatted version will instead be sent to stdout.
+``new_cards``'s syntax is ``tunnel new_cards <deck filename>``. It will modify
+the file as to add default SM-2 values to new card lines. Specifically, it
+appends ``0	2.5	0	2021-04-01``.
 
 #### due
 ```sh
@@ -169,8 +167,10 @@ h	i	1	2.46	1	2021-12-08
 4
 ```
 
-``due`` will iterate over the lines in the deck file and print those that are scheduled
-for review. This is determined by looking at the inter-repetition interval and the last
-review date. The numbers spit out are the positions of each card line, which you should
-provide to ``front``, ``back``, and ``review``. If you add new cards after ``due``ing but
-before reviewing, you should re-run ``due``, since the old numbers may be inaccurate now.
+``due``'s syntax is ``tunnel due <deck filename>``. It will iterate over the
+lines in the deck file and print those that are scheduled for review. This is
+determined by looking at the inter-repetition interval and the last review
+date. The numbers spit out are the positions of each card line, which you
+should provide to ``front``, ``back``, and ``review``. If you add new cards
+after ``due``ing but before reviewing, you should re-run ``due``, since the old
+numbers may be inaccurate now.
