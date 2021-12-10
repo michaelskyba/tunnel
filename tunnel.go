@@ -15,8 +15,16 @@ var usage = `Valid commands:
 	tunnel review <line number> <score> <deck filename>
 See README.md for more information.`
 
+func handle(err error, message string) {
+	if err != nil {
+		fmt.Fprintln(os.Stderr, message)
+		os.Exit(1)
+	}
+}
+
 func write_lines(filename string, lines []string) {
-	_ = ioutil.WriteFile(filename, []byte(strings.Join(lines, "\n")), 0644)
+	err := ioutil.WriteFile(filename, []byte(strings.Join(lines, "\n")), 0644)
+	handle(err, "Error: couldn't write to habit file")
 }
 
 func new_card(card string) string {
@@ -44,7 +52,8 @@ func main() {
 		filename := os.Args[2]
 
 		// Open deck file
-		file, _ := ioutil.ReadFile(filename)
+		file, err := ioutil.ReadFile(filename)
+		handle(err, "Error: couldn't read deck file")
 		lines := strings.Split(string(file), "\n")
 
 		// Set every line to its new_card() value
