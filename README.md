@@ -28,12 +28,12 @@ an example deck file, is provided, which I will use here.
 
 #### 2. Use ``new_cards`` to format new cards.
 ```sh
-~/tunnel $ tunnel new_cards deck
+~/tunnel $ tunnel new_cards example_deck
 ```
 
 #### 3. Use ``due`` to determine which cards need to be reviewed.
 ```sh
-~/tunnel $ tunnel due deck
+~/tunnel $ tunnel due example_deck
 1
 3
 4
@@ -42,45 +42,45 @@ an example deck file, is provided, which I will use here.
 #### 4. Use ``review`` to review each due card.
 Use ``front`` and ``back`` to see the fronts and backs of the respective cards.
 ```sh
-~/tunnel $ tunnel front 1 deck
+~/tunnel $ tunnel front 1 example_deck
 Symbol: Gold
 ~/tunnel $ # The user can't remember
-~/tunnel $ tunnel back 1 deck
+~/tunnel $ tunnel back 1 example_deck
 Au
 ~/tunnel $ # Now the answer seems obvious and familiar ("Oh, right, it's Au!")
-~/tunnel $ tunnel review 1 2 deck
+~/tunnel $ tunnel review 1 2 example_deck
 ```
 ```sh
-~/tunnel $ tunnel front 3 deck
+~/tunnel $ tunnel front 3 example_deck
 Symbol: Silver
 ~/tunnel $ # The user thinks for a second and then remembers
-~/tunnel $ tunnel back 3 deck
+~/tunnel $ tunnel back 3 example_deck
 Ag
-~/tunnel $ tunnel review 3 4 deck
+~/tunnel $ tunnel review 3 4 example_deck
 ```
 ```sh
-~/tunnel $ tunnel front 4 deck
+~/tunnel $ tunnel front 4 example_deck
 Symbol: Carbon
 ~/tunnel $ # The user remembered instantly
-~/tunnel $ tunnel back 4 deck
+~/tunnel $ tunnel back 4 example_deck
 C
-~/tunnel $ tunnel review 4 5 deck
+~/tunnel $ tunnel review 4 5 example_deck
 ```
 Repeat this process with ``due`` after each set of reviews until there are no
 more due cards. You'll have to review a card multiple times if you score below
 4, so you can't just use ``due`` once.
 ```sh
-~/tunnel $ tunnel due deck
+~/tunnel $ tunnel due example_deck
 1
 ```
 ```sh
-~/tunnel $ tunnel front 1 deck
+~/tunnel $ tunnel front 1 example_deck
 Symbol: Gold
 ~/tunnel $ # The user remembered instantly
-~/tunnel $ tunnel back 1 deck
+~/tunnel $ tunnel back 1 example_deck
 Au
-~/tunnel $ tunnel review 1 5 deck
-~/tunnel $ tunnel due deck
+~/tunnel $ tunnel review 1 5 example_deck
+~/tunnel $ tunnel due example_deck
 ~/tunnel $ # Reviews are done for this deck!
 ```
 That's it! Understand, though, that these tunnel commands are never supposed
