@@ -9,12 +9,16 @@ import (
 	"io/ioutil"
 )
 
-var usage = `Valid commands:
+
+func user_error() {
+	fmt.Println(`Valid commands:
 	tunnel new_cards <deck filename>
 	tunnel due <deck filename>
 	tunnel <front|back> <line number> <deck filename>
 	tunnel review <line number> <score> <deck filename>
-See README.md for more information.`
+See README.md for more information.`)
+	os.Exit(1)
+}
 
 func handle(err error, message string) {
 	if err != nil {
@@ -71,8 +75,7 @@ func main() {
 	len_of_args := len(os.Args)
 
 	if len_of_args == 1 {
-		fmt.Println(usage)
-		os.Exit(1)
+		user_error()
 	}
 
 	switch os.Args[1]+strconv.Itoa(len_of_args) {
@@ -128,7 +131,6 @@ func main() {
 		fmt.Println("review")
 
 	default:
-		fmt.Println(usage)
-		os.Exit(1)
+		user_error()
 	}
 }
