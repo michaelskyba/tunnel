@@ -15,6 +15,10 @@ var usage = `Valid commands:
 	tunnel review <line number> <score> <deck filename>
 See README.md for more information.`
 
+func write_lines(filename string, lines []string) {
+	_ = ioutil.WriteFile(filename, []byte(strings.Join(lines, "\n")), 0644)
+}
+
 func new_card(card string) string {
 
 	// Only add fields to valid new cards
@@ -45,10 +49,10 @@ func main() {
 
 		// Set every line to its new_card() value
 		for i, line := range lines {
-			// lines[i] = new_card(line)
-			fmt.Println(new_card(line))
-			fmt.Println(i)
+			lines[i] = new_card(line)
 		}
+
+		write_lines(filename, lines)
 
 	case "due3":
 		fmt.Println("due")
