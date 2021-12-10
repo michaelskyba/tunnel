@@ -15,6 +15,16 @@ var usage = `Valid commands:
 	tunnel review <line number> <score> <deck filename>
 See README.md for more information.`
 
+func new_card(card string) string {
+
+	// Only add fields to valid new cards
+	if len(strings.Split(card, " ")) != 2 {
+		return card
+	}
+
+	return card+"	0	2.5	0	2021-04-01"
+}
+
 func main() {
 
 	len_of_args := len(os.Args)
@@ -33,8 +43,11 @@ func main() {
 		file, _ := ioutil.ReadFile(filename)
 		lines := strings.Split(string(file), "\n")
 
-		for _, line := range lines {
-			fmt.Println(line)
+		// Set every line to its new_card() value
+		for i, line := range lines {
+			// lines[i] = new_card(line)
+			fmt.Println(new_card(line))
+			fmt.Println(i)
 		}
 
 	case "due3":
