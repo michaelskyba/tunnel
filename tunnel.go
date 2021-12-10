@@ -30,7 +30,7 @@ func write_lines(filename string, lines []string) {
 func new_card(card string) string {
 
 	// Only add fields to valid new cards
-	if len(strings.Split(card, " ")) != 2 {
+	if len(strings.Split(card, "	")) != 2 {
 		return card
 	}
 
