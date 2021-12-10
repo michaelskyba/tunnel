@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
+	"io/ioutil"
 )
 
 var usage = `Valid commands:
@@ -25,7 +27,15 @@ func main() {
 	switch os.Args[1]+strconv.Itoa(len_of_args) {
 
 	case "new_cards3":
-		fmt.Println("new_cards")
+		filename := os.Args[2]
+
+		// Open deck file
+		file, _ := ioutil.ReadFile(filename)
+		lines := strings.Split(string(file), "\n")
+
+		for _, line := range lines {
+			fmt.Println(line)
+		}
 
 	case "due3":
 		fmt.Println("due")
