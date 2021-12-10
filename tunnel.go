@@ -105,7 +105,7 @@ func main() {
 	case "due3":
 		fmt.Println("due")
 
-	case "front4":
+	case "front4", "back4":
 		i, err := strconv.Atoi(os.Args[2])
 		handle(err, "Error: non-integer card number provided")
 
@@ -117,10 +117,12 @@ func main() {
 			os.Exit(1)
 		}
 
-		fmt.Println(fields[0])
-
-	case "back4":
-		fmt.Println("back")
+		// Print first or second field depending on the argument
+		if os.Args[1] == "front" {
+			fmt.Println(fields[0])
+		} else {
+			fmt.Println(fields[1])
+		}
 
 	case "review5":
 		fmt.Println("review")
