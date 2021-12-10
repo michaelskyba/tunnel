@@ -70,6 +70,13 @@ func new_card(card string) string {
 	return card+"	0	2.5	0	2021-04-01"
 }
 
+func due(card string) bool {
+	if card == "e" {
+		return false
+	}
+	return true
+}
+
 func main() {
 
 	len_of_args := len(os.Args)
@@ -106,7 +113,22 @@ func main() {
 		}
 
 	case "due3":
-		fmt.Println("due")
+		// Open deck file
+		file, err := os.Open(os.Args[2])
+		defer file.Close()
+		handle(err, "Error: couldn't read deck file")
+
+		i := 0
+		scanner := bufio.NewScanner(file)
+
+		// Iterate and print due for review
+		for scanner.Scan() {
+			if due(scanner.Text()) {
+				fmt.Println(i)
+			}
+
+			i++
+		}
 
 	case "front4", "back4":
 		i, err := strconv.Atoi(os.Args[2])
