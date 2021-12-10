@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"bufio"
 	"os"
 	"strconv"
 	"strings"
@@ -20,6 +21,34 @@ func handle(err error, message string) {
 		fmt.Fprintln(os.Stderr, message)
 		os.Exit(1)
 	}
+}
+
+// O(n) time; don't use get_line in a loop
+func get_line(filename string, target int) string {
+	if target >= 0 {
+
+		// Open
+		file, err := os.Open(filename)
+		defer file.Close()
+		handle(err, "Error: couldn't read deck file")
+
+		i := 0
+		scanner := bufio.NewScanner(file)
+
+		// Iterate while incrementing until we hit (target)
+		for scanner.Scan() {
+			if i == target {
+				return scanner.Text()
+			}
+
+			i++
+		}
+	}
+
+	fmt.Fprintf(os.Stderr, "Error: no line %v in deck\n", target)
+	os.Exit(1)
+
+	return ""
 }
 
 func write_lines(filename string, lines []string) {
@@ -77,7 +106,10 @@ func main() {
 		fmt.Println("due")
 
 	case "front4":
-		fmt.Println("front")
+		i, err := strconv.Atoi(os.Args[2])
+		handle(err, "Error: non-integer card number provided")
+
+		fmt.Println(get_line(os.Args[3], i))
 
 	case "back4":
 		fmt.Println("back")
