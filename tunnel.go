@@ -56,12 +56,22 @@ func main() {
 		handle(err, "Error: couldn't read deck file")
 		lines := strings.Split(string(file), "\n")
 
+		// We only want to update the file if it's changed, just in case someone
+		// has a problem with the last modified date being updated)
+		changed := false
+
 		// Set every line to its new_card() value
 		for i, line := range lines {
 			lines[i] = new_card(line)
+
+			if lines[i] != line {
+				changed = true
+			}
 		}
 
-		write_lines(filename, lines)
+		if changed {
+			write_lines(filename, lines)
+		}
 
 	case "due3":
 		fmt.Println("due")
