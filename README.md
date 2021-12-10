@@ -10,6 +10,15 @@ such as a cleaner, more maintainable codebase and an automated test system
 Currently, tunnel is unusable. Use scripture for the time being and check
 back for updates soon.
 
+## Installation
+```sh
+git clone https://github.com/michaelskyba/tunnel
+cd tunnel
+go build tunnel.go
+su -c "cp tunnel /usr/local/bin/"
+su -c "cp shovel /usr/local/bin/" # Only if you care about shovel
+```
+
 ## Usage
 ### shovel
 Shovel is a provided wrapper around tunnel that simplifies the most common
