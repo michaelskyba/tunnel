@@ -109,7 +109,15 @@ func main() {
 		i, err := strconv.Atoi(os.Args[2])
 		handle(err, "Error: non-integer card number provided")
 
-		fmt.Println(get_line(os.Args[3], i))
+		card := get_line(os.Args[3], i)
+		fields := strings.Split(card, "	")
+
+		if len(fields) < 2 {
+			fmt.Fprintf(os.Stderr, "Error: line %v is not a valid card\n", i)
+			os.Exit(1)
+		}
+
+		fmt.Println(fields[0])
 
 	case "back4":
 		fmt.Println("back")
