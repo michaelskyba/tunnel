@@ -71,9 +71,13 @@ func new_card(card string) string {
 }
 
 func due(card string) bool {
-	if card == "e" {
+	fields := strings.Split(card, "	")
+
+	// Not a valid card, so we already know it can't be due
+	if len(fields) != 6 {
 		return false
 	}
+
 	return true
 }
 
