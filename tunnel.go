@@ -67,7 +67,7 @@ func new_card(card string) string {
 		return card
 	}
 
-	return card+"	0	2.5	0	2021-04-01"
+	return card+"	0	2.5	0	1617249600"
 }
 
 func due(card string) bool {

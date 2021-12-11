@@ -122,8 +122,8 @@ If you want a line to act as a comment, don't put any tabs in it. Blank lines
 are fine too.
 
 After running ``new_cards``, you will see that ``0	2.5	0	
-2021-04-01`` is added. The first 0 is the repetition number, the 2.5 is the
-easiness factor, the second 0 is the inter-repetition interval, and the date
+1617249600`` is added. The first 0 is the repetition number, the 2.5 is the
+easiness factor, the second 0 is the inter-repetition interval, and the epoch time
 is the that of the last review. Since there haven't been any reviews for new
 cards, the date is set to an arbitrary past date. As you review your cards,
 these values will be updated. If you want to modify a card's front or backside,
@@ -139,23 +139,23 @@ a	b
 c	d
 ~ $ tunnel new_cards deck
 ~ $ cat deck
-a	b	0	2.5	0	2021-04-01
-c	d	0	2.5	0	2021-04-01
+a	b	0	2.5	0	1617249600
+c	d	0	2.5	0	1617249600
 ```
 
 ``new_cards``'s syntax is ``tunnel new_cards <deck filename>``. It will modify
 the file as to add default SM-2 values to new card lines. Specifically, it
-appends ``0	2.5	0	2021-04-01``.
+appends ``0	2.5	0	1617249600``.
 
 #### ``due``
 ```sh
 ~ $ date
 Thu Dec  9 03:04:51 PM EST 2021
 ~ $ cat letters
-a	b	0	2.5	0	2021-04-01
-c	d	0	2.5	0	2021-04-01
-e	f	5	3	131.554	2021-11-21
-h	i	1	2.46	1	2021-12-08
+a	b	0	2.5	0	1617249600
+c	d	0	2.5	0	1617249600
+e	f	5	3	131.554	1637470800
+h	i	1	2.46	1	1638939600
 ~ $ tunnel due letters
 0
 1
@@ -173,7 +173,7 @@ numbers may be inaccurate now.
 #### ``front`` and ``back``
 ```sh
 ~ $ cat letters
-a	b	1	2.46	1	2021-12-08
+a	b	1	2.46	1	1638939600
 c	d
 e
 ~ $ tunnel front 0 letters
@@ -194,15 +194,15 @@ of the card, and ``back`` will print the second tab-separated value, which is th
 ~ $ date
 Thu Dec  9 05:45:13 PM EST 2021
 ~ $ cat letters
-a	b	0	2.5	0	2021-04-01
-c	d	5	3	131.554	2021-11-21
+a	b	0	2.5	0	1617249600
+c	d	5	3	131.554	1637470800
 e
 ~ $ tunnel due letters
 0
 ~ $ tunnel review 0 4 letters
 ~ $ cat letters
-a	b	1	2.5	1	2021-12-09
-c	d	5	3	131.554	2021-11-21
+a	b	1	2.5	1	1639026000
+c	d	5	3	131.554	1637470800
 e
 ~ $ tunnel review 1 2 letters
 Error: card 1 is not due for review.
