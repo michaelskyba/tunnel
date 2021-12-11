@@ -131,6 +131,9 @@ feel free to edit the first two values (front and back), but never touch
 any of the others (e.g. repetition number).
 
 ### Description of individual tunnel commands
+Note that commands only check for validity in the context of their own
+functions, so a card in your deck may be invalid even if e.g. ``front``
+doesn't tell you that it is.
 
 #### ``new_cards``
 ```sh
