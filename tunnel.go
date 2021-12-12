@@ -71,7 +71,7 @@ func new_card(card string) string {
 	return card+"	0	2.5	0	1617249600"
 }
 
-func due(card string) bool {
+func due(card string, current_time int) bool {
 	fields := strings.Split(card, "	")
 
 	// Not a valid card, so we already know it can't be due
@@ -82,8 +82,6 @@ func due(card string) bool {
 	// To be due, (last review date) + (inter-repetition interval)
 	// has to be before (current date)
 
-	epoch := int(time.Now().Unix())
-
 	interval, err1 := strconv.Atoi(fields[4])
 	last_review, err2 := strconv.Atoi(fields[5])
 
@@ -93,7 +91,7 @@ func due(card string) bool {
 	// Interval is in days, so we multiply by the number of seconds
 	// in a day, which is 86400
 
-	if last_review + interval * 86400 < epoch {
+	if last_review + interval * 86400 < current_time {
 		return true
 	}
 	return false
@@ -144,8 +142,9 @@ func main() {
 		scanner := bufio.NewScanner(file)
 
 		// Iterate and print due for review
+		current_time := int(time.Now().Unix())
 		for scanner.Scan() {
-			if due(scanner.Text()) {
+			if due(scanner.Text(), current_time) {
 				fmt.Println(i)
 			}
 
