@@ -103,7 +103,7 @@ A deck file is a file containing a deck of cards, each of which will be reviewed
 Deck files are in TSV format. If you prefer e.g. CSV, convert your commas to
 tabs before running tunnel and then conver them back to commas afterwards.
 
-Cards are inputted in the syntax ``front	back``. In reviews, you will
+Cards are inputted in the syntax ``front<tab>back``. In reviews, you will
 look at the front of the card and attempt to recall the back of the card. This
 is the only type of card, unlike e.g. Anki, which has many card types. You can
 emulate other card types easily, though. For instance, I have a macro in my text
@@ -121,14 +121,14 @@ to
 If you want a line to act as a comment, don't put any tabs in it. Blank lines
 are fine too.
 
-After running ``new_cards``, you will see that ``0	2.5	0	
-1617249600`` is added. The first 0 is the repetition number, the 2.5 is the
-easiness factor, the second 0 is the inter-repetition interval, and the epoch time
-is the that of the last review. Since there haven't been any reviews for new
-cards, the date is set to an arbitrary past date. As you review your cards,
+After running ``new_cards``, you will see that ``0x2.5x0x1617249600`` (where
+``x``s are tabs) is added. The first 0 is the repetition number, the 2.5 is the
+easiness factor, the second 0 is the inter-repetition interval, and the epoch
+time is the that of the last review. Since there haven't been any reviews for
+new cards, the date is set to an arbitrary past date. As you review your cards,
 these values will be updated. If you want to modify a card's front or backside,
-feel free to edit the first two values (front and back), but never touch
-any of the others (e.g. repetition number).
+feel free to edit the first two values (front and back), but never touch any of
+the others (e.g. repetition number).
 
 ### Description of individual tunnel commands
 Note that commands only check for validity in the context of their own
