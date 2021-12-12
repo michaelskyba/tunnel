@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"io/ioutil"
+	"time"
 )
 
 
@@ -78,7 +79,24 @@ func due(card string) bool {
 		return false
 	}
 
-	return true
+	// To be due, (last review date) + (inter-repetition interval)
+	// has to be before (current date)
+
+	epoch := int(time.Now().Unix())
+
+	interval, err1 := strconv.Atoi(fields[4])
+	last_review, err2 := strconv.Atoi(fields[5])
+
+	handle(err1, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+	handle(err2, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+
+	// Interval is in days, so we multiply by the number of seconds
+	// in a day, which is 86400
+
+	if last_review + interval * 86400 < epoch {
+		return true
+	}
+	return false
 }
 
 func main() {
