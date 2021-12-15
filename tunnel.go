@@ -8,6 +8,7 @@ import (
 	"strings"
 	"io/ioutil"
 	"time"
+	"math"
 )
 
 
@@ -95,6 +96,59 @@ func due(card string, current_time int) bool {
 		return true
 	}
 	return false
+}
+
+func review(card string, grade int, current_time int) string {
+	fields := strings.Split(card, "	")
+
+	// Invalid card detection
+	if len(fields) != 6 {
+		fmt.Fprintf(os.Stderr, "Error: card '%v' is invalid\n", card)
+		os.Exit(1)
+	}
+
+	// Repetition number
+	n, err := strconv.Atoi(fields[2])
+	handle(err, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+
+	// Easiness factor
+	EF, err := strconv.ParseFloat(fields[3], 64)
+	handle(err, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+
+	// Inter-repetition interval
+	I, err := strconv.Atoi(fields[4])
+	handle(err, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+
+	// SM-2
+	if grade >= 3 {
+
+		if n == 0 {
+			I = 1
+		} else if n == 1 {
+			I = 6
+		} else {
+			I = int(math.Round(float64(I) * EF))
+		}
+
+		n++
+
+	} else {
+		n = 0
+		I = 1
+	}
+
+	EF = EF + (0.1 - (5 - float64(grade)) * (0.08 + (5 - float64(grade)) * 0.02))
+    if EF < 1.3 {
+	    EF = 1.3
+    }
+
+	// Convert to strings and return
+    fields[2] = strconv.Itoa(n)
+    fields[3] = strconv.FormatFloat(EF, 'f', -1, 64)
+    fields[4] = strconv.Itoa(I)
+    fields[5] = strconv.Itoa(current_time)
+
+    return strings.Join(fields, "	")
 }
 
 func main() {
