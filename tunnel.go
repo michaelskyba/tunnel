@@ -225,7 +225,30 @@ func main() {
 		}
 
 	case "review5":
-		fmt.Println("review")
+		filename := os.Args[4]
+
+		// Open deck file
+		file, err := ioutil.ReadFile(filename)
+		handle(err, "Error: couldn't read deck file")
+
+		lines := strings.Split(string(file), "\n")
+
+		line_number, err := strconv.Atoi(os.Args[2])
+		handle(err, "Error: non-integer card number provided")
+
+		grade, err := strconv.Atoi(os.Args[3])
+		handle(err, "Error: non-integer grade number provided")
+
+		current_time := int(time.Now().Unix())
+
+		// Not worth using get_line() because we need to update "lines"
+		for i, line := range lines {
+			if i == line_number {
+				lines[i] = review(line, grade, current_time)
+			}
+		}
+
+		write_lines(filename, lines)
 
 	default:
 		user_error()
