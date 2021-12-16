@@ -231,3 +231,64 @@ The grades' meanings are as follows:
 
 If you need to review a set of cards outside of their regular schedule, copy them into
 a new, temporary deck and study that one.
+
+#### ``retry``
+```sh
+~ $ tunnel retry geography
+~ $ tunnel due geography
+0
+1
+2
+~ $ tunnel review 0 4 geography
+~ $ tunnel review 1 3 geography
+~ $ tunnel review 2 2 geography
+~ $ tunnel retry geography
+1
+2
+~ $ tunnel review 1 1 geography
+~ $ tunnel review 2 4 geography
+~ $ tunnel retry geography
+1
+~ $ tunnel review 1 5 geography
+~ $ tunnel retry geography
+~ $ # Done with reviews
+```
+
+``retry``'s syntax is ``tunnel retry <deck filename>``. After doing your initial review,
+SM-2 wants you to retry any cards you gave a grade below 4. The ``retry`` command will
+show you these "retry cards" so that you don't have to keep track of them yourself.
+After each set of retries, the retry list will be updated. To keep track, tunnel uses
+files in ``/tmp/scripture``.
+
+For the example above, the file would look like this after each command:
+- ``tunnel review 1 3 geography``
+```
+1
+```
+- ``tunnel review 2 2 geography``
+```
+1
+2
+```
+- ``tunnel review 1 1 geography``
+(As you can see, a dash is used to indicate the next retry cycle)
+```
+2
+-
+1
+```
+- ``tunnel review 2 4 geography``
+```
+1
+```
+- ``tunnel review 1 5 geography``
+(The file gets deleted)
+
+The retry file would be called ``/tmp/scripture/-home-michael-decks-geography``.
+The forward slashes are converted to dashes to avoid having to create a bunch of
+directories inside ``/tmp/scripture``.
+
+Do not start moving lines around in your deck file after starting a review. If you
+fail card 1 and thus the retry file contains card 1, there's no way tunnel will know
+if you suddenly swap the first and second lines of your file. Then, retry will have
+innacurate information. So, if you want to make modifications, finish all reviews first.
