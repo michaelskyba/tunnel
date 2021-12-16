@@ -75,11 +75,14 @@ Symbol: Carbon
 C
 ~/tunnel $ tunnel review 3 5 example_deck
 ```
-Repeat this process with ``due`` after each set of reviews until there are no
-more due cards. You'll have to review a card multiple times if you score below
-4, so you can't just use ``due`` once.
+
+#### 5. Cycle through ``retry``
+After going through the initial set of due cards, use ``retry`` to see which
+cards need to be retried. Repeat this process with ``retry`` after each set of
+reviews until there are no more cards to review. You'll have to review a card
+again if you score below 4, so you can't skip ``retry`` or only use it once.
 ```sh
-~/tunnel $ tunnel due example_deck
+~/tunnel $ tunnel retry example_deck
 0
 ```
 ```sh
@@ -89,7 +92,7 @@ Symbol: Gold
 ~/tunnel $ tunnel back 0 example_deck
 Au
 ~/tunnel $ tunnel review 0 5 example_deck
-~/tunnel $ tunnel due example_deck
+~/tunnel $ tunnel retry example_deck
 ~/tunnel $ # Reviews are done for this deck!
 ```
 That's it! Understand, though, that these tunnel commands are never supposed
