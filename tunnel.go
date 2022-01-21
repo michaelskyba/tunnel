@@ -18,6 +18,7 @@ func user_error() {
 	tunnel due <deck filename>
 	tunnel <front|back> <line number> <deck filename>
 	tunnel review <line number> <score> <deck filename>
+	tunnel retry <deck filename>
 See README.md for more information.`)
 	os.Exit(1)
 }
