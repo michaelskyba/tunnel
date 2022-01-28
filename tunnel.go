@@ -245,6 +245,12 @@ func main() {
 		// Not worth using get_line() because we need to update "lines"
 		for i, line := range lines {
 			if i == line_number {
+
+				if !due(line, current_time) {
+					fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", line_number)
+					os.Exit(1)
+				}
+
 				lines[i] = review(line, grade, current_time)
 			}
 		}
