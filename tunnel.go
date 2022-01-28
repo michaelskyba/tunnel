@@ -37,7 +37,7 @@ func get_line(filename string, target int) string {
 		// Open
 		file, err := os.Open(filename)
 		defer file.Close()
-		handle(err, "Error: couldn't read deck file")
+		handle(err, "Error: couldn't read deck file.")
 
 		i := 0
 		scanner := bufio.NewScanner(file)
@@ -52,7 +52,7 @@ func get_line(filename string, target int) string {
 		}
 	}
 
-	fmt.Fprintf(os.Stderr, "Error: no line %v in deck\n", target)
+	fmt.Fprintf(os.Stderr, "Error: no line %v in deck.\n", target)
 	os.Exit(1)
 
 	return ""
@@ -60,7 +60,7 @@ func get_line(filename string, target int) string {
 
 func write_lines(filename string, lines []string) {
 	err := ioutil.WriteFile(filename, []byte(strings.Join(lines, "\n")), 0644)
-	handle(err, "Error: couldn't write to habit file")
+	handle(err, "Error: couldn't write to habit file.")
 }
 
 func new_card(card string) string {
@@ -87,8 +87,8 @@ func due(card string, current_time int) bool {
 	interval, err1 := strconv.Atoi(fields[4])
 	last_review, err2 := strconv.Atoi(fields[5])
 
-	handle(err1, fmt.Sprintf("Error: card '%v' is invalid\n", card))
-	handle(err2, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+	handle(err1, fmt.Sprintf("Error: card '%v' is invalid.\n", card))
+	handle(err2, fmt.Sprintf("Error: card '%v' is invalid.\n", card))
 
 	// Interval is in days, so we multiply by the number of seconds
 	// in a day, which is 86400
@@ -104,21 +104,21 @@ func review(card string, grade int, current_time int) string {
 
 	// Invalid card detection
 	if len(fields) != 6 {
-		fmt.Fprintf(os.Stderr, "Error: card '%v' is invalid\n", card)
+		fmt.Fprintf(os.Stderr, "Error: card '%v' is invalid.\n", card)
 		os.Exit(1)
 	}
 
 	// Repetition number
 	n, err := strconv.Atoi(fields[2])
-	handle(err, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+	handle(err, fmt.Sprintf("Error: card '%v' is invalid.\n", card))
 
 	// Easiness factor
 	EF, err := strconv.ParseFloat(fields[3], 64)
-	handle(err, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+	handle(err, fmt.Sprintf("Error: card '%v' is invalid.\n", card))
 
 	// Inter-repetition interval
 	I, err := strconv.Atoi(fields[4])
-	handle(err, fmt.Sprintf("Error: card '%v' is invalid\n", card))
+	handle(err, fmt.Sprintf("Error: card '%v' is invalid.\n", card))
 
 	// SM-2
 	if grade >= 3 {
@@ -167,7 +167,7 @@ func main() {
 
 		// Open deck file
 		file, err := ioutil.ReadFile(filename)
-		handle(err, "Error: couldn't read deck file")
+		handle(err, "Error: couldn't read deck file.")
 		lines := strings.Split(string(file), "\n")
 
 		// We only want to update the file if it's changed, just in case someone
@@ -191,7 +191,7 @@ func main() {
 		// Open deck file
 		file, err := os.Open(os.Args[2])
 		defer file.Close()
-		handle(err, "Error: couldn't read deck file")
+		handle(err, "Error: couldn't read deck file.")
 
 		i := 0
 		scanner := bufio.NewScanner(file)
@@ -208,13 +208,13 @@ func main() {
 
 	case "front4", "back4":
 		i, err := strconv.Atoi(os.Args[2])
-		handle(err, "Error: non-integer card number provided")
+		handle(err, "Error: non-integer card number provided.")
 
 		card := get_line(os.Args[3], i)
 		fields := strings.Split(card, "	")
 
 		if len(fields) < 2 {
-			fmt.Fprintf(os.Stderr, "Error: line %v is not a valid card\n", i)
+			fmt.Fprintf(os.Stderr, "Error: line %v is not a valid card.\n", i)
 			os.Exit(1)
 		}
 
@@ -230,15 +230,15 @@ func main() {
 
 		// Open deck file
 		file, err := ioutil.ReadFile(filename)
-		handle(err, "Error: couldn't read deck file")
+		handle(err, "Error: couldn't read deck file.")
 
 		lines := strings.Split(string(file), "\n")
 
 		line_number, err := strconv.Atoi(os.Args[2])
-		handle(err, "Error: non-integer card number provided")
+		handle(err, "Error: non-integer card number provided.")
 
 		grade, err := strconv.Atoi(os.Args[3])
-		handle(err, "Error: non-integer grade number provided")
+		handle(err, "Error: non-integer grade number provided.")
 
 		current_time := int(time.Now().Unix())
 

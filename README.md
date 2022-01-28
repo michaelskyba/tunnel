@@ -187,9 +187,9 @@ a
 ~ $ tunnel back 1 letters
 d
 ~ $ tunnel front 2 letters
-Error: line 2 is not a valid card
+Error: line 2 is not a valid card.
 ~ $ tunnel back 3 letters
-Error: no line 3 in deck
+Error: no line 3 in deck.
 ```
 The syntax here is ``tunnel <front|back> <card line number> <deck filename>``.
 ``front`` will print the first tab-separated value in the card, which is the front
@@ -213,9 +213,9 @@ e
 ~ $ tunnel review 1 2 letters
 Error: card 1 is not due for review.
 ~ $ tunnel review 2 5 letters
-Error: line 2 is not a valid card
+Error: line 2 is not a valid card.
 ~ $ tunnel review 3 0 letters
-Error: no line 3 in deck
+Error: no line 3 in deck.
 ```
 ``review``'s syntax is ``tunnel review <card line number> <review grade> <deck filename>``.
 This will update the card's SM-2 fields in accordance to the SM-2 algorithm. To see
