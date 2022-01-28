@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"time"
 	"math"
+	"path/filepath"
 )
 
 
@@ -61,6 +62,13 @@ func get_line(filename string, target int) string {
 func write_lines(filename string, lines []string) {
 	err := ioutil.WriteFile(filename, []byte(strings.Join(lines, "\n")), 0644)
 	handle(err, "Error: couldn't write to habit file.")
+}
+
+// Mark a card for a retry in the deck retry file
+func fail_list(absolute string, line_number int) {
+	fmt.Println("You failed the card lol")
+	fmt.Printf("Path: %v\n", absolute)
+	fmt.Printf("Line number: %v\n", line_number)
 }
 
 func new_card(card string) string {
@@ -252,6 +260,14 @@ func main() {
 				}
 
 				lines[i] = review(line, grade, current_time)
+
+				// Keep track of which cards need to be retried
+				if grade < 4 {
+					absolute, err := filepath.Abs(filename)
+					handle(err, "Error: broken deck path?")
+
+					fail_list(absolute, line_number)
+				}
 			}
 		}
 
