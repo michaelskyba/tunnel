@@ -74,10 +74,10 @@ func fail_list(absolute, line_number string) {
 
 	// Make sure retry file's parent directory exists
 	path := strings.Split(absolute, "/")
-	output_path := fmt.Sprintf("%v/%v", tmp_dir, strings.Join(path[:len(path)-1], "/"))
+	output_path := fmt.Sprintf("%v/tunnel%v", tmp_dir, strings.Join(path[:len(path)-1], "/"))
 	os.MkdirAll(output_path, 0755)
 
-	filename := fmt.Sprintf("%v/%v", tmp_dir, absolute)
+	filename := fmt.Sprintf("%v/tunnel%v", tmp_dir, absolute)
 	write_lines(filename, []string{line_number})
 }
 
