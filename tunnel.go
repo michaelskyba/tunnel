@@ -65,10 +65,20 @@ func write_lines(filename string, lines []string) {
 }
 
 // Mark a card for a retry in the deck retry file
-func fail_list(absolute string, line_number int) {
-	fmt.Println("You failed the card lol")
-	fmt.Printf("Path: %v\n", absolute)
-	fmt.Printf("Line number: %v\n", line_number)
+func fail_list(absolute, line_number string) {
+
+	tmp_dir := os.Getenv("TMPDIR")
+	if tmp_dir == "" {
+		tmp_dir = "/tmp"
+	}
+
+	// Make sure retry file's parent directory exists
+	path := strings.Split(absolute, "/")
+	output_path := fmt.Sprintf("%v/%v", tmp_dir, strings.Join(path[:len(path)-1], "/"))
+	os.MkdirAll(output_path, 0755)
+
+	filename := fmt.Sprintf("%v/%v", tmp_dir, absolute)
+	write_lines(filename, []string{line_number})
 }
 
 func new_card(card string) string {
@@ -266,7 +276,10 @@ func main() {
 					absolute, err := filepath.Abs(filename)
 					handle(err, "Error: broken deck path?")
 
-					fail_list(absolute, line_number)
+					// os.Args[2]: No point converting back to a
+					// string again when writing to the file later
+
+					fail_list(absolute, os.Args[2])
 				}
 			}
 		}
