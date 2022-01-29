@@ -261,7 +261,7 @@ a new, temporary deck and study that one.
 SM-2 wants you to retry any cards you gave a grade below 4. The ``retry`` command will
 show you these "retry cards" so that you don't have to keep track of them yourself.
 After each set of retries, the retry list will be updated. To keep track, tunnel uses
-files in ``/tmp/scripture``.
+files in ``/tmp/tunnel``.
 
 For the example above, the file would look like this after each command:
 - ``tunnel review 1 3 geography``
@@ -287,9 +287,9 @@ For the example above, the file would look like this after each command:
 - ``tunnel review 1 5 geography``
 (The file gets deleted)
 
-The retry file would be called ``/tmp/scripture/-home-michael-decks-geography``.
+The retry file would be called ``/tmp/tunnel/-home-michael-decks-geography``.
 The forward slashes are converted to dashes to avoid having to create a bunch of
-directories inside ``/tmp/scripture``.
+directories inside ``/tmp/tunnel``.
 
 Do not start moving lines around in your deck file after starting a review. If you
 fail card 1 and thus the retry file contains card 1, there's no way tunnel will know

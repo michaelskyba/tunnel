@@ -61,7 +61,7 @@ func get_line(filename string, target int) string {
 
 func write_lines(filename string, lines []string) {
 	err := ioutil.WriteFile(filename, []byte(strings.Join(lines, "\n")), 0644)
-	handle(err, "Error: couldn't write to habit file.")
+	handle(err, "Error: couldn't write to deck file.")
 }
 
 // Mark a card for a retry in the deck retry file
