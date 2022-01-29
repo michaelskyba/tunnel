@@ -287,9 +287,10 @@ For the example above, the file would look like this after each command:
 - ``tunnel review 1 5 geography``
 (The file gets deleted)
 
-The retry file would be called ``/tmp/tunnel/-home-michael-decks-geography``.
-The forward slashes are converted to dashes to avoid having to create a bunch of
-directories inside ``/tmp/tunnel``.
+If the deck file was ``/home/michael/decks/geography``, the retry file's path
+would be ``/tmp/tunnel/home/michael/decks/geography``. We need to have the same
+chain of directories because a user could have different deck files with the
+same filename being reviewed.
 
 Do not start moving lines around in your deck file after starting a review. If you
 fail card 1 and thus the retry file contains card 1, there's no way tunnel will know
