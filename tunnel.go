@@ -78,7 +78,24 @@ func fail_list(absolute, line_number string) {
 	os.MkdirAll(output_path, 0755)
 
 	filename := fmt.Sprintf("%v/tunnel%v", tmp_dir, absolute)
-	write_lines(filename, []string{line_number})
+
+	// The discarding of the error here is deliberate. If the file doesn't
+	// exist, it's fine, because we'll create it in write_lines() later. If the
+	// permissions are wrong, we'll get an error when we write to the file, which
+	// means that the user will still know about it. It would be a better UX to catch
+	// it early but I don't know how to do that idiomatically... I can't find any
+	// error variables in ioutil's online documentation.
+	file, _ := ioutil.ReadFile(filename)
+	lines := strings.Split(string(file), "\n")
+
+	// For some reason, []string{""} is the output for an empty one, not []string{}
+	if len(lines) == 1 && lines[0] == "" {
+		lines = []string{line_number}
+	} else {
+		lines = append(lines, line_number)
+	}
+
+	write_lines(filename, lines)
 }
 
 func new_card(card string) string {
