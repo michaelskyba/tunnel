@@ -67,6 +67,10 @@ func write_lines(filename string, lines []string) {
 // Mark a card for a retry in the deck retry file
 func fail_list(absolute, line_number string) {
 
+	// If this function is running, the assumption is that this card was
+	// just *validly* reviewed. So, either the card was due, or the card
+	// was on the first cycle of the fail list.
+
 	tmp_dir := os.Getenv("TMPDIR")
 	if tmp_dir == "" {
 		tmp_dir = "/tmp"
@@ -85,15 +89,81 @@ func fail_list(absolute, line_number string) {
 	// means that the user will still know about it. It would be a better UX to catch
 	// it early but I don't know how to do that idiomatically... I can't find any
 	// error variables in ioutil's online documentation.
+	// If the file doesn't exist, lines will be []string{""}, which works fine.
 	file, _ := ioutil.ReadFile(filename)
 	lines := strings.Split(string(file), "\n")
 
-	// For some reason, []string{""} is the output for an empty one, not []string{}
-	if len(lines) == 1 && lines[0] == "" {
-		lines = []string{line_number}
+	second_cycle := false
+	card_found := false
+	var card_index int
+
+	// If the line is already there, we need to add it to the next retry cycle
+	for i, line := range lines {
+
+		if line == "-" {
+			if !second_cycle {
+				second_cycle = true
+				continue
+			}
+
+			// There is more than one "-"
+			fmt.Fprintln(os.Stderr, "Error: broken retry file")
+			os.Exit(1)
+		}
+
+		if line == line_number {
+
+			// It's impossible to have more than two retry cycles by default.
+			// So, if we're seeing the line number in the retry cycle, it has
+			// to be in the first cycle, not the second cycle.
+			if second_cycle {
+				fmt.Fprintln(os.Stderr, "Error: broken retry file")
+				os.Exit(1)
+			}
+
+			// We can't stop the loop because we still need to know if
+			// the retry file has one cycle or two cycles
+			if !card_found {
+				card_found = true
+				card_index = i
+
+			// Multiple of the same card in the retry file
+			} else {
+				fmt.Fprintln(os.Stderr, "Error: broken retry file")
+				os.Exit(1)
+			}
+		}
+	}
+
+	// We don't want a random newline in the middle, we want it at the end
+	if lines[len(lines)-1] == "" {
+		lines = lines[:len(lines)-1]
+	}
+
+	if card_found {
+
+		// If we leave the cycle indicator after the first cycle is complete,
+		// it will be flagged as a broken file next time
+		if lines[0] == "-" {
+			lines = lines[1:]
+		}
+
+		// We're moving the line to the second cycle, so we
+		// want to remove it from the first cycle
+		lines = append(lines[:card_index], lines[card_index+1:]...)
+
+		if second_cycle {
+			lines = append(lines, line_number)
+		} else {
+			lines = append(lines, "-", line_number)
+		}
+
 	} else {
 		lines = append(lines, line_number)
 	}
+
+	// Keep a newline at the end
+	lines = append(lines, "")
 
 	write_lines(filename, lines)
 }
