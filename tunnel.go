@@ -142,12 +142,6 @@ func fail_list(absolute, line_number string) {
 
 	if card_found {
 
-		// If we leave the cycle indicator after the first cycle is complete,
-		// it will be flagged as a broken file next time
-		if lines[0] == "-" {
-			lines = lines[1:]
-		}
-
 		// We're moving the line to the second cycle, so we
 		// want to remove it from the first cycle
 		lines = append(lines[:card_index], lines[card_index+1:]...)
@@ -156,6 +150,14 @@ func fail_list(absolute, line_number string) {
 			lines = append(lines, line_number)
 		} else {
 			lines = append(lines, "-", line_number)
+		}
+
+		// If we leave the cycle indicator after the first cycle is complete,
+		// it will be flagged as a broken file next time. Also, we don't need
+		// the cycle indicator if the reviewed card was the sole card in the
+		// retry file.
+		if lines[0] == "-" {
+			lines = lines[1:]
 		}
 
 	} else {
