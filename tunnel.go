@@ -66,7 +66,7 @@ func write_lines(filename string, lines []string) {
 // If this function is running, the assumption is that this card was
 // *validly* reviewed just now. So, either the card was due, or the card
 // was on the first cycle of the fail list.
-func fail_list(absolute, line_number string, grade int) {
+func update_retry(absolute, line_number string, grade int) {
 
 	// Make sure retry file's parent directory exists
 	tmp_dir := os.Getenv("TMPDIR")
@@ -179,7 +179,7 @@ func new_card(card string) string {
 	return card + "	0	2.5	0	1617249600"
 }
 
-func due(card string, current_time int) bool {
+func check_due(card string, current_time int) bool {
 
 	// To be due, (last review date) + (inter-repetition interval)
 	// has to be before (current date)
@@ -205,12 +205,12 @@ func due(card string, current_time int) bool {
 	return false
 }
 
-func retry(line_number string) bool {
+func check_retry(line_number string) bool {
 	// Makeshift
 	return true
 }
 
-func review(card string, grade int, current_time int) string {
+func review(card string, grade, current_time int) string {
 	fields := strings.Split(card, "	")
 
 	if len(fields) != 6 {
@@ -303,7 +303,7 @@ func main() {
 
 		current_time := int(time.Now().Unix())
 		for scanner.Scan() {
-			if due(scanner.Text(), current_time) {
+			if check_due(scanner.Text(), current_time) {
 				fmt.Println(i)
 			}
 
@@ -348,8 +348,8 @@ func main() {
 				// os.Args[2]: No point converting back to a
 				// string again when writing to the file later
 
-				is_due := due(line, current_time)
-				is_retry := retry(os.Args[2])
+				is_due := check_due(line, current_time)
+				is_retry := check_retry(os.Args[2])
 
 				if is_due || is_retry {
 					lines[i] = review(line, grade, current_time)
@@ -362,7 +362,7 @@ func main() {
 					absolute, err := filepath.Abs(filename)
 					handle(err, "Error: broken deck path?")
 
-					fail_list(absolute, os.Args[2], grade)
+					update_retry(absolute, os.Args[2], grade)
 				}
 			}
 		}
