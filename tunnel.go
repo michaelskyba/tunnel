@@ -62,11 +62,11 @@ func write_lines(filename string, lines []string) {
 	handle(err, "Error: couldn't write to deck file.")
 }
 
-// fail_list marks a card for a retry in the deck retry file.
+// fail_list manipulates the deck retry file to account for a review.
 // If this function is running, the assumption is that this card was
 // *validly* reviewed just now. So, either the card was due, or the card
 // was on the first cycle of the fail list.
-func fail_list(absolute, line_number string) {
+func fail_list(absolute, line_number string, grade int) {
 
 	// Make sure retry file's parent directory exists
 	tmp_dir := os.Getenv("TMPDIR")
@@ -205,6 +205,11 @@ func due(card string, current_time int) bool {
 	return false
 }
 
+func retry(line_number string) bool {
+	// Makeshift
+	return true
+}
+
 func review(card string, grade int, current_time int) string {
 	fields := strings.Split(card, "	")
 
@@ -340,21 +345,24 @@ func main() {
 		for i, line := range lines {
 			if i == line_number {
 
-				if !due(line, current_time) {
+				// os.Args[2]: No point converting back to a
+				// string again when writing to the file later
+
+				is_due := due(line, current_time)
+				is_retry := retry(os.Args[2])
+
+				if is_due || is_retry {
+					lines[i] = review(line, grade, current_time)
+				} else {
 					fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", line_number)
 					os.Exit(1)
 				}
 
-				lines[i] = review(line, grade, current_time)
-
-				if grade < 4 {
+				if is_retry || (is_due && grade < 4) {
 					absolute, err := filepath.Abs(filename)
 					handle(err, "Error: broken deck path?")
 
-					// os.Args[2]: No point converting back to a
-					// string again when writing to the file later
-
-					fail_list(absolute, os.Args[2])
+					fail_list(absolute, os.Args[2], grade)
 				}
 			}
 		}
