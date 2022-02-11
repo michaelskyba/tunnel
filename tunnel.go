@@ -143,10 +143,12 @@ func update_retry(absolute, line_number string, grade int) {
 		// want to remove it from the first cycle
 		lines = append(lines[:card_index], lines[card_index+1:]...)
 
-		if second_cycle {
-			lines = append(lines, line_number)
-		} else {
-			lines = append(lines, "-", line_number)
+		if grade < 4 {
+			if second_cycle {
+				lines = append(lines, line_number)
+			} else {
+				lines = append(lines, "-", line_number)
+			}
 		}
 
 		// If we leave the cycle indicator after the first cycle is complete,
