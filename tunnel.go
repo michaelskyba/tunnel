@@ -62,6 +62,25 @@ func write_lines(filename string, lines []string) {
 	handle(err, fmt.Sprintf("Error: couldn't write to %v.", filename))
 }
 
+func get_retry(filename string) string {
+	absolute, err := filepath.Abs(filename)
+	handle(err, "Error: broken deck path.")
+
+	tmp_dir := os.Getenv("TMPDIR")
+	if tmp_dir == "" {
+		tmp_dir = "/tmp"
+	}
+
+	path := strings.Split(absolute, "/")
+	output_path := fmt.Sprintf("%v/tunnel%v", tmp_dir, strings.Join(path[:len(path)-1], "/"))
+
+	// Make sure retry file's parent directory exists
+	err = os.MkdirAll(output_path, 0755)
+	handle(err, fmt.Sprintf("Error: couldn't create %v.", output_path))
+
+	return fmt.Sprintf("%v/tunnel%v", tmp_dir, absolute)
+}
+
 // fail_list manipulates the deck retry file to account for a review.
 // If this function is running, the assumption is that this card was
 // *validly* reviewed just now. So, either the card was due, or the card
@@ -362,23 +381,7 @@ func main() {
 		// Not worth using get_line() because we need to update "lines"
 		for i, line := range lines {
 			if i == card_index {
-				absolute, err := filepath.Abs(filename)
-				handle(err, "Error: broken deck path.")
-
-				// Make sure retry file's parent directory exists
-
-				tmp_dir := os.Getenv("TMPDIR")
-				if tmp_dir == "" {
-					tmp_dir = "/tmp"
-				}
-
-				path := strings.Split(absolute, "/")
-				output_path := fmt.Sprintf("%v/tunnel%v", tmp_dir, strings.Join(path[:len(path)-1], "/"))
-
-				err = os.MkdirAll(output_path, 0755)
-				handle(err, fmt.Sprintf("Error: couldn't create %v.", output_path))
-
-				retry_filename := fmt.Sprintf("%v/tunnel%v", tmp_dir, absolute)
+				retry_filename := get_retry(filename)
 
 				// os.Args[2]: No point converting back to a
 				// string again when writing to the file later
