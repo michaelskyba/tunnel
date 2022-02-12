@@ -197,8 +197,29 @@ func check_due(card string, current_time int) bool {
 }
 
 func check_retry(filename, line_number string) bool {
-	// Makeshift
-	return true
+	file, err := os.Open(filename)
+	defer file.Close()
+
+	// Let's just assume that the error means the file doesn't exist
+	if err != nil {
+		return false
+	}
+
+	var line string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line = scanner.Text()
+
+		// All the cards from the first retry cycle have to be retried before
+		// the cards from the second retry cycle
+		if line == "-" {
+			return false
+		} else if line == line_number {
+			return true
+		}
+	}
+
+	return false
 }
 
 func review(card string, grade, current_time int) string {
