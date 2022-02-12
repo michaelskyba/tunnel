@@ -160,7 +160,7 @@ Thu Dec  9 03:04:51 PM EST 2021
 ~ $ cat letters
 a	b	0	2.5	0	1617249600
 c	d	0	2.5	0	1617249600
-e	f	5	3	131.554	1637470800
+e	f	5	3	132	1637470800
 h	i	1	2.46	1	1638939600
 ~ $ tunnel due letters
 0
@@ -201,14 +201,14 @@ of the card, and ``back`` will print the second tab-separated value, which is th
 Thu Dec  9 05:45:13 PM EST 2021
 ~ $ cat letters
 a	b	0	2.5	0	1617249600
-c	d	5	3	131.554	1637470800
+c	d	5	3	132	1637470800
 e
 ~ $ tunnel due letters
 0
 ~ $ tunnel review 0 4 letters
 ~ $ cat letters
 a	b	1	2.5	1	1639026000
-c	d	5	3	131.554	1637470800
+c	d	5	3	132	1637470800
 e
 ~ $ tunnel review 1 2 letters
 Error: card 1 is not due for review.
