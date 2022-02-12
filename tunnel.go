@@ -155,6 +155,7 @@ func update_retry(filename, line_number string, grade int) {
 	if len(lines) == 0 {
 		err := os.Remove(filename)
 		handle(err, "Error: couldn't remove retry file.")
+		return
 	}
 
 	// Keep a newline at the end
