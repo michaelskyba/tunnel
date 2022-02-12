@@ -66,7 +66,7 @@ func write_lines(filename string, lines []string) {
 // If this function is running, the assumption is that this card was
 // *validly* reviewed just now. So, either the card was due, or the card
 // was on the first cycle of the fail list.
-func update_retry(filename, line_number string, grade int) {
+func update_retry(filename, card_index string, grade int) {
 
 	// The discarding of the error here is deliberate. If the file doesn't
 	// exist, it's fine, because we'll create it in write_lines() later. If the
@@ -93,17 +93,17 @@ func update_retry(filename, line_number string, grade int) {
 			}
 
 			// There is more than one "-"
-			fmt.Fprintln(os.Stderr, "Error: broken retry file")
+			fmt.Fprintln(os.Stderr, "Error: broken retry file.")
 			os.Exit(1)
 		}
 
-		if line == line_number {
+		if line == card_index {
 
 			// It's impossible to have more than two retry cycles by default.
 			// So, if we're seeing the line number in the retry cycle, it has
 			// to be in the first cycle, not the second cycle.
 			if second_cycle {
-				fmt.Fprintln(os.Stderr, "Error: broken retry file")
+				fmt.Fprintln(os.Stderr, "Error: broken retry file.")
 				os.Exit(1)
 			}
 
@@ -115,7 +115,7 @@ func update_retry(filename, line_number string, grade int) {
 
 			// Multiple of the same card in the retry file
 			} else {
-				fmt.Fprintln(os.Stderr, "Error: broken retry file")
+				fmt.Fprintln(os.Stderr, "Error: broken retry file.")
 				os.Exit(1)
 			}
 		}
@@ -134,9 +134,9 @@ func update_retry(filename, line_number string, grade int) {
 
 		if grade < 4 {
 			if second_cycle {
-				lines = append(lines, line_number)
+				lines = append(lines, card_index)
 			} else {
-				lines = append(lines, "-", line_number)
+				lines = append(lines, "-", card_index)
 			}
 		}
 
@@ -149,7 +149,7 @@ func update_retry(filename, line_number string, grade int) {
 		}
 
 	} else {
-		lines = append(lines, line_number)
+		lines = append(lines, card_index)
 	}
 
 	if len(lines) == 0 {
@@ -202,7 +202,7 @@ func check_due(card string, current_time int) bool {
 	return false
 }
 
-func check_retry(filename, line_number string) bool {
+func check_retry(filename, card_index string) bool {
 	file, err := os.Open(filename)
 	defer file.Close()
 
@@ -220,7 +220,7 @@ func check_retry(filename, line_number string) bool {
 		// the cards from the second retry cycle
 		if line == "-" {
 			return false
-		} else if line == line_number {
+		} else if line == card_index {
 			return true
 		}
 	}
@@ -238,7 +238,7 @@ func review(card string, grade, current_time int) string {
 
 	// n: repetition number
 	// EF: easiness factor
-	// I: inter-repition interval
+	// I: inter-repetition interval
 
 	n, err := strconv.Atoi(fields[2])
 	handle(err, fmt.Sprintf("Error: card '%v' is invalid.\n", card))
@@ -352,7 +352,7 @@ func main() {
 		handle(err, "Error: couldn't read deck file.")
 		lines := strings.Split(string(file), "\n")
 
-		line_number, err := strconv.Atoi(os.Args[2])
+		card_index, err := strconv.Atoi(os.Args[2])
 		handle(err, "Error: non-integer card number provided.")
 		grade, err := strconv.Atoi(os.Args[3])
 		handle(err, "Error: non-integer grade number provided.")
@@ -361,9 +361,9 @@ func main() {
 
 		// Not worth using get_line() because we need to update "lines"
 		for i, line := range lines {
-			if i == line_number {
+			if i == card_index {
 				absolute, err := filepath.Abs(filename)
-				handle(err, "Error: broken deck path?")
+				handle(err, "Error: broken deck path.")
 
 				// Make sure retry file's parent directory exists
 
@@ -389,7 +389,7 @@ func main() {
 				if is_due || is_retry {
 					lines[i] = review(line, grade, current_time)
 				} else {
-					fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", line_number)
+					fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", card_index)
 					os.Exit(1)
 				}
 
