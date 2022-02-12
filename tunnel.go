@@ -144,12 +144,17 @@ func update_retry(filename, line_number string, grade int) {
 		// it will be flagged as a broken file next time. Also, we don't need
 		// the cycle indicator if the reviewed card was the sole card in the
 		// retry file.
-		if lines[0] == "-" {
+		if len(lines) > 0 && lines[0] == "-" {
 			lines = lines[1:]
 		}
 
 	} else {
 		lines = append(lines, line_number)
+	}
+
+	if len(lines) == 0 {
+		err := os.Remove(filename)
+		handle(err, "Error: couldn't remove retry file.")
 	}
 
 	// Keep a newline at the end
