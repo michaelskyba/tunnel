@@ -131,7 +131,7 @@ time is that of the last review. Since there haven't been any reviews for
 new cards, the date is set to an arbitrary past date. As you review your cards,
 these values will be updated. If you want to modify a card's front or backside,
 feel free to edit the first two values (front and back), but never touch any of
-the others (e.g. repetition number).
+the others.
 
 ### Description of individual tunnel commands
 Note that commands only check for validity in the context of their own
@@ -171,9 +171,9 @@ h	i	1	2.46	1	1638939600
 ``due``'s syntax is ``tunnel due <deck filename>``. It will iterate over the
 lines in the deck file and print those that are scheduled for review. This is
 determined by looking at the inter-repetition interval and the last review
-date. The numbers spit out are the positions of each card line, which you
+date. The numbers spit out are the line numbers of each card, which you
 should provide to ``front``, ``back``, and ``review``. If you add new cards
-after ``due``ing but before reviewing, you should re-run ``due``, since the old
+after ``due``ing but before reviewing, you should rerun ``due``; the old
 numbers may be inaccurate now.
 
 #### ``front`` and ``back``
@@ -232,8 +232,8 @@ The grades' meanings are as follows:
 ```
 (https://en.wikipedia.org/wiki/SuperMemo#Description_of_SM-2_algorithm)
 
-If you need to review a set of cards outside of their regular schedule, copy them into
-a new, temporary deck and study that one.
+If you need to review a set of cards outside of their regular schedule, copy
+them into a new, temporary deck and study that one.
 
 #### ``retry``
 ```sh
@@ -257,11 +257,11 @@ a new, temporary deck and study that one.
 ~ $ # Done with reviews
 ```
 
-``retry``'s syntax is ``tunnel retry <deck filename>``. After doing your initial review,
-SM-2 wants you to retry any cards you gave a grade below 4. The ``retry`` command will
-show you these "retry cards" so that you don't have to keep track of them yourself.
-After each set of retries, the retry list will be updated. To keep track, tunnel uses
-files in ``/tmp/tunnel``.
+``retry``'s syntax is ``tunnel retry <deck filename>``. After doing your
+initial review, SM-2 wants you to retry any cards for which you gave a grade of
+less than 4. The ``retry`` command will show you these "retry cards" so that
+you don't have to keep track of them yourself. After each set of retries, the
+retry list will be updated. To keep track, tunnel uses files in ``/tmp/tunnel``.
 
 For the example above, the file would look like this after each command:
 - ``tunnel review 1 3 geography``
@@ -292,7 +292,8 @@ would be ``/tmp/tunnel/home/michael/decks/geography``. We need to have the same
 chain of directories because a user could have different deck files with the
 same filename being reviewed.
 
-Do not start moving lines around in your deck file after starting a review. If you
-fail card 1 and thus the retry file contains card 1, there's no way tunnel will know
-if you suddenly swap the first and second lines of your file. Then, retry will have
-inaccurate information. So, if you want to make modifications, finish all reviews first.
+Do not start moving lines around in your deck file after starting a review. If
+you fail card 1 and thus the retry file contains card 1, there's no way tunnel
+will know if you suddenly swap the first and second lines of your file. Then,
+retry will have inaccurate information. So, if you want to modify the order of
+the deck, finish all reviews first.
