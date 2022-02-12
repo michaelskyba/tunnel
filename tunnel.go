@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"math"
@@ -408,6 +409,28 @@ func main() {
 		}
 
 		write_lines(filename, lines)
+
+	case "retry3":
+		filename := get_retry(os.Args[2])
+		file, err := os.Open(filename)
+		defer file.Close()
+
+		// If the file doesn't exist, there are no retries to do
+		if errors.Is(err, os.ErrNotExist) {
+			os.Exit(0)
+		}
+		handle(err, "Error: couldn't read retry file.")
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			line := scanner.Text()
+
+			// The user only needs to worry about the first cycle
+			if line == "-" {
+				break
+			}
+			fmt.Println(line)
+		}
 
 	default:
 		user_error()
