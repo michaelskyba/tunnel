@@ -59,25 +59,14 @@ func get_line(filename string, target int) string {
 
 func write_lines(filename string, lines []string) {
 	err := ioutil.WriteFile(filename, []byte(strings.Join(lines, "\n")), 0644)
-	handle(err, "Error: couldn't write to deck file.")
+	handle(err, fmt.Sprintf("Error: couldn't write to %v.", filename))
 }
 
 // fail_list manipulates the deck retry file to account for a review.
 // If this function is running, the assumption is that this card was
 // *validly* reviewed just now. So, either the card was due, or the card
 // was on the first cycle of the fail list.
-func update_retry(absolute, line_number string, grade int) {
-
-	// Make sure retry file's parent directory exists
-	tmp_dir := os.Getenv("TMPDIR")
-	if tmp_dir == "" {
-		tmp_dir = "/tmp"
-	}
-	path := strings.Split(absolute, "/")
-	output_path := fmt.Sprintf("%v/tunnel%v", tmp_dir, strings.Join(path[:len(path)-1], "/"))
-	os.MkdirAll(output_path, 0755)
-
-	filename := fmt.Sprintf("%v/tunnel%v", tmp_dir, absolute)
+func update_retry(filename, line_number string, grade int) {
 
 	// The discarding of the error here is deliberate. If the file doesn't
 	// exist, it's fine, because we'll create it in write_lines() later. If the
@@ -207,7 +196,7 @@ func check_due(card string, current_time int) bool {
 	return false
 }
 
-func check_retry(line_number string) bool {
+func check_retry(filename, line_number string) bool {
 	// Makeshift
 	return true
 }
@@ -346,12 +335,29 @@ func main() {
 		// Not worth using get_line() because we need to update "lines"
 		for i, line := range lines {
 			if i == line_number {
+				absolute, err := filepath.Abs(filename)
+				handle(err, "Error: broken deck path?")
+
+				// Make sure retry file's parent directory exists
+
+				tmp_dir := os.Getenv("TMPDIR")
+				if tmp_dir == "" {
+					tmp_dir = "/tmp"
+				}
+
+				path := strings.Split(absolute, "/")
+				output_path := fmt.Sprintf("%v/tunnel%v", tmp_dir, strings.Join(path[:len(path)-1], "/"))
+
+				err = os.MkdirAll(output_path, 0755)
+				handle(err, fmt.Sprintf("Error: couldn't create %v.", output_path))
+
+				retry_filename := fmt.Sprintf("%v/tunnel%v", tmp_dir, absolute)
 
 				// os.Args[2]: No point converting back to a
 				// string again when writing to the file later
 
 				is_due := check_due(line, current_time)
-				is_retry := check_retry(os.Args[2])
+				is_retry := check_retry(retry_filename, os.Args[2])
 
 				if is_due || is_retry {
 					lines[i] = review(line, grade, current_time)
@@ -361,10 +367,12 @@ func main() {
 				}
 
 				if is_retry || (is_due && grade < 4) {
-					absolute, err := filepath.Abs(filename)
-					handle(err, "Error: broken deck path?")
 
-					update_retry(absolute, os.Args[2], grade)
+					// There's no DRY benefit to having this as a function
+					// but I feel like it makes the contents of this switch case
+					// quite a bit more organized. Feel free to bully me if this
+					// is wrong style-wise.
+					update_retry(retry_filename, os.Args[2], grade)
 				}
 			}
 		}
