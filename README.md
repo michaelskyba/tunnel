@@ -7,8 +7,9 @@ such as a cleaner, more maintainable codebase and an automated test system
 (without an added dependency).
 
 ## Status
-Currently, tunnel is unusable. Use scripture for the time being and check
-back for updates soon.
+All of tunnel's commands should work, but I haven't done very much manual
+testing and I haven't finished making the automated tests in tunnel_test.go.
+Shovel does not work yet.
 
 ## Installation
 ```sh

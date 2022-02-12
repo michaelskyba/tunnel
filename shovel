@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "Welcome to shovel, an example of an interactive tunnel wrapper."
