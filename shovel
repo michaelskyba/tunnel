@@ -1,2 +1,19 @@
 #!/bin/sh
-echo "Welcome to shovel, an example of an interactive tunnel wrapper."
+
+check_usage() {
+	[ -z "$1" ] \
+		&& echo "Usage: shovel <deck file>" \
+		&& exit 1
+
+	[ -f "$1" ] || exists=0
+	[ "$exists" ] \
+		&& echo "$1: Not a file" \
+		&& exit 1
+}
+
+main_menu() {
+	echo "Welcome to shovel, an example of an interactive tunnel wrapper."
+}
+
+check_usage $1
+main_menu
