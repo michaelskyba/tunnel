@@ -1,5 +1,11 @@
 #!/bin/sh
 
+input() {
+	printf "> "
+	read -r sel
+	export sel
+}
+
 check_usage() {
 	[ -z "$1" ] \
 		&& echo "Usage: shovel <deck file>" \
@@ -10,6 +16,7 @@ check_usage() {
 		&& echo "$1: Not a file" \
 		&& exit 1
 }
+
 
 main_menu() {
 	clear
@@ -24,9 +31,7 @@ Press Ctrl+c to exit.
 4) Browse cards.
 "
 
-	printf "> "
-	read -r sel
-
+	input
 	echo "$sel" | grep -q "^[1-4]$" || main_menu "$1"
 
 	# This code won't be reached if main_menu was just executed
