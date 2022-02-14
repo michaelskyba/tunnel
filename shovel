@@ -12,8 +12,53 @@ check_usage() {
 }
 
 main_menu() {
-	echo "Welcome to shovel, an example of an interactive tunnel wrapper."
+	clear
+	echo "
+Welcome to shovel, an example of an interactive tunnel wrapper.
+Deck used: '$1'.
+Press Ctrl+c to exit.
+
+1) Start the review.
+2) Add a card.
+3) Modify a card.
+4) Browse cards.
+"
+
+	printf "> "
+	read -r sel
+
+	echo "$sel" | grep -q "^[1-4]$" || main_menu "$1"
+
+	# This code won't be reached if main_menu was just executed
+
+	clear
+	echo
+
+	case "$sel" in
+		1) start_review ;;
+		2) add_card ;;
+		3) modify_card ;;
+		4) browse_cards ;;
+	esac
 }
 
-check_usage $1
-main_menu
+add_card() {
+	echo "(Press Ctrl+c to exit.)"
+	echo "Enter a front side for the card:"
+}
+
+modify_card() {
+	echo "Pick a card to modify."
+	echo "Press Enter to continue."
+}
+
+browse_cards() {
+	echo "Starting the pager"
+}
+
+start_review() {
+	echo "Starting the review"
+}
+
+check_usage "$1"
+main_menu "$1"
