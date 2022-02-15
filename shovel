@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 input() {
 	printf "> "
@@ -15,6 +15,10 @@ check_usage() {
 	[ "$exists" ] \
 		&& echo "$1: Not a file" \
 		&& exit 1
+
+	# I don't know if it's my computer but for some reason
+	# the script dies without an echo from check_usage
+	echo > /dev/null
 }
 
 
@@ -36,33 +40,90 @@ Press Ctrl+c to exit.
 
 	# This code won't be reached if main_menu was just executed
 
-	clear
-	echo
-
 	case "$sel" in
 		1) start_review ;;
-		2) add_card ;;
+		2) add_card "$1" ;;
 		3) modify_card ;;
 		4) browse_cards ;;
 	esac
 }
 
 add_card() {
-	echo "(Press Ctrl+c to exit.)"
-	echo "Enter a front side for the card:"
+	clear
+	echo "
+Enter a front side for the card.
+- Tabs cannot be used in cards, so they will be converted to spaces.
+- Press Ctrl+c if you wish to exit.
+"
+	input
+	front="$(echo "$sel" | sed "s/	/    /g")"
+
+	clear
+	echo "
+Enter a back side for the card.
+- Tabs cannot be used in cards, so they will be converted to spaces.
+- Press Ctrl+c if you wish to exit.
+"
+	input
+	back="$(echo "$sel" | sed "s/	/    /g")"
+
+	while :
+	do
+		clear
+		echo "
+Your card's front, surrounded by pipes:
+|$front|
+Your card's back, surrounded by pipes:
+|$back|
+
+Press Ctrl+c to exit.
+
+1) Confirm
+2) Restart
+"
+
+		input
+		echo "$sel" | grep "^[1-2]$" && break
+	done
+
+	case "$sel" in
+		1)
+			echo "$front	$back" >> "$1"
+
+			clear
+			echo "
+Your card was successfully added to '$1'.
+Press Enter to continue.
+			"
+
+			read
+			main_menu "$1"
+
+			;;
+
+		2) add_card "$1" ;;
+	esac
+
+	exit
 }
 
 modify_card() {
 	echo "Pick a card to modify."
 	echo "Press Enter to continue."
+
+	exit
 }
 
 browse_cards() {
 	echo "Starting the pager"
+
+	exit
 }
 
 start_review() {
 	echo "Starting the review"
+
+	exit
 }
 
 check_usage "$1"
