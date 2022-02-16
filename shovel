@@ -191,7 +191,12 @@ start_review() {
 	tunnel new_cards "$1"
 
 	due=$(tunnel due "$1")
-	if [ -z "$due" ]
+	retry=$(tunnel retry "$1")
+	[ -z "$due" ] \
+		&& [ -z "$retry" ] \
+		&& no_reviews=1
+
+	if [ "$no_reviews" ]
 	then
 		echo "
 You have no reviews due.
@@ -205,24 +210,29 @@ Press Enter to continue.
 
 	for card in $due
 	do
-		clear
+		review_card "$1" $card
+	done
+}
 
-		front=$(tunnel front $card "$1")
-		back=$(tunnel back $card "$1")
+review_card() {
+	clear
 
-		echo "
+	front=$(tunnel front $card "$1")
+	back=$(tunnel back $card "$1")
+
+	echo "
 Front ==================================================
 $front
 
 Try recalling the back of the card.
 Once you've tried your best, press Enter to flip the card.
 "
-		read
+	read
 
-		while :
-		do
-			clear
-			echo "
+	while :
+	do
+		clear
+		echo "
 Front ==================================================
 $front
 
@@ -238,13 +248,12 @@ Now, grade yourself on how well you recalled the card.
 5) Correct response with perfect recall.
 "
 
-			input
-			echo "$sel" | grep -q "^[0-5]$" && break
-		done
-
-		echo "grade: $sel"
-		read
+		input
+		echo "$sel" | grep -q "^[0-5]$" && break
 	done
+
+	echo "grade: $sel"
+	read
 }
 
 check_usage "$1"
