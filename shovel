@@ -112,7 +112,10 @@ modify_card() {
 }
 
 browse_cards() {
-	exit
+	clear
+
+	${PAGER:-less} "$1"
+	main_menu "$1"
 }
 
 start_review() {
