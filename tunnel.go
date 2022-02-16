@@ -385,6 +385,15 @@ func main() {
 
 		current_time := int(time.Now().Unix())
 
+		// The deck file is expected to end with a newline, so
+		// e.g. len(lines) will be five if there are four cards.
+		// Accessing this fourth card would use the "3" index
+		// so we check if >= len(lines) - 1.
+		if deck_index < 0 || deck_index >= len(lines) - 1{
+			fmt.Fprintf(os.Stderr, "Error: no line %v in deck.\n", deck_index)
+			os.Exit(1)
+		}
+
 		// Not worth using get_line() because we need to update "lines"
 		for i, line := range lines {
 			if i == deck_index {
