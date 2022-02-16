@@ -207,6 +207,27 @@ Press Enter to continue.
 	do
 		review_card
 	done
+
+	while :
+	do
+		retry=$(tunnel retry "$deck")
+		[ -z "$retry" ] && break
+
+		for card in $retry
+		do
+			review_card
+		done
+	done
+
+	clear
+	echo "
+You have finished all of your reviews!
+Come back tomorrow, or after adding new cards.
+Press Enter to continue.
+	"
+	read -r
+
+	main_menu
 }
 
 review_card() {

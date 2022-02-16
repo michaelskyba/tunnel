@@ -9,7 +9,7 @@ such as a cleaner, more maintainable codebase and an automated test system
 ## Status
 All of tunnel's commands should work, but I haven't done very much manual
 testing and I haven't finished making the automated tests in tunnel_test.go.
-Shovel does not work yet.
+Shovel should work too, but I also haven't done many tests.
 
 ## Installation
 ```sh
