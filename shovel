@@ -186,12 +186,13 @@ browse_cards() {
 }
 
 start_review() {
+	clear
+
 	tunnel new_cards "$1"
 
 	due=$(tunnel due "$1")
 	if [ -z "$due" ]
 	then
-		clear
 		echo "
 You have no reviews due.
 Come back tomorrow, or after adding new cards.
@@ -204,10 +205,46 @@ Press Enter to continue.
 
 	for card in $due
 	do
-		echo "Do $card"
-	done
+		clear
 
-	exit
+		front=$(tunnel front $card "$1")
+		back=$(tunnel back $card "$1")
+
+		echo "
+Front ==================================================
+$front
+
+Try recalling the back of the card.
+Once you've tried your best, press Enter to flip the card.
+"
+		read
+
+		while :
+		do
+			clear
+			echo "
+Front ==================================================
+$front
+
+Back ===================================================
+$back
+
+Now, grade yourself on how well you recalled the card.
+0) 'Total blackout', complete failure to recall the information.
+1) Incorrect response, but upon seeing the correct answer it felt familiar.
+2) Incorrect response, but upon seeing the correct answer it seemed easy to remember.
+3) Correct response, but required significant difficulty to recall.
+4) Correct response, after some hesitation.
+5) Correct response with perfect recall.
+"
+
+			input
+			echo "$sel" | grep -q "^[0-5]$" && break
+		done
+
+		echo "grade: $sel"
+		read
+	done
 }
 
 check_usage "$1"
