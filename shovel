@@ -185,18 +185,14 @@ browse_cards() {
 }
 
 start_review() {
-	clear
-
 	tunnel new_cards "$deck"
 
 	due=$(tunnel due "$deck")
 	retry=$(tunnel retry "$deck")
-	[ -z "$due" ] \
-		&& [ -z "$retry" ] \
-		&& no_reviews=1
 
-	if [ "$no_reviews" ]
+	if [ -z "$due" ] && [ -z "$retry" ]
 	then
+		clear
 		echo "
 You have no reviews due.
 Come back tomorrow, or after adding new cards.
@@ -251,8 +247,7 @@ Now, grade yourself on how well you recalled the card.
 		echo "$sel" | grep -q "^[0-5]$" && break
 	done
 
-	echo "grade: $sel"
-	read -r
+	tunnel review "$card" "$sel" "$deck"
 }
 
 deck="$1"
