@@ -106,7 +106,7 @@ Your card was successfully added to '$deck'.
 Press Enter to continue.
 "
 
-	read
+	read -r
 	main_menu
 }
 
@@ -120,7 +120,7 @@ modify_card() {
 You do not have fzf installed, which is used for selection.
 Press Enter to go back to the main menu.
 "
-		read
+		read -r
 		main_menu
 	fi
 
@@ -146,7 +146,7 @@ Press Enter to continue.
 		i=$((i+1))
 	done < "$deck"
 
-	read
+	read -r
 
 	sel=$(fzf < "$file")
 	[ -z "$sel" ] && main_menu
@@ -173,7 +173,7 @@ Your card was successfully modified in '$deck'.
 Press Enter to continue.
 "
 
-	read
+	read -r
 	main_menu
 }
 
@@ -202,7 +202,7 @@ You have no reviews due.
 Come back tomorrow, or after adding new cards.
 Press Enter to continue.
 "
-		read
+		read -r
 
 		main_menu
 	fi
@@ -216,8 +216,8 @@ Press Enter to continue.
 review_card() {
 	clear
 
-	front=$(tunnel front $card "$deck")
-	back=$(tunnel back $card "$deck")
+	front=$(tunnel front "$card" "$deck")
+	back=$(tunnel back "$card" "$deck")
 
 	echo "
 Front ==================================================
@@ -226,7 +226,7 @@ $front
 Try recalling the back of the card.
 Once you've tried your best, press Enter to flip the card.
 "
-	read
+	read -r
 
 	while :
 	do
@@ -252,7 +252,7 @@ Now, grade yourself on how well you recalled the card.
 	done
 
 	echo "grade: $sel"
-	read
+	read -r
 }
 
 deck="$1"
