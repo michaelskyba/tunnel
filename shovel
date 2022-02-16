@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
+# Almost all of the code here has to do with the UI.
+# As you can see, the actual tunnel interaction is very simple.
+
 input() {
 	printf "> "
 	read -r sel
@@ -148,9 +151,31 @@ Press Enter to continue.
 
 	sel=$(fzf < "$file")
 	[ -z "$sel" ] && main_menu "$1"
-	sel=${sel%%.*}
 
-	exit
+	line_number=${sel%%.*}
+
+	# Keep the card review info, if it exists
+	extra=$sel
+	extra=${extra#*	}
+	extra=${extra#*	}
+	extra="	$extra"
+	echo "$sel" | grep -q "^[^	]*	[^	]*$" && unset extra
+	echo "${extra#	}" | grep -q "	" || unset extra
+
+	card_input
+
+	tmp=$(mktemp -u)
+	awk "NR==$line_number {\$0=\"$front	$back$extra\"} 1" "$1" > "$tmp"
+	mv "$tmp" "$1"
+
+	clear
+	echo "
+Your card was successfully modified in '$1'.
+Press Enter to continue.
+"
+
+	read
+	main_menu "$1"
 }
 
 browse_cards() {
