@@ -249,6 +249,12 @@ func check_retry(filename, deck_index string) bool {
 }
 
 func review(card string, grade, current_time int) string {
+
+	if grade < 0 || grade > 5 {
+		fmt.Fprintf(os.Stderr, "Error: invalid grade '%v'.\n", grade)
+		os.Exit(1)
+	}
+
 	fields := strings.Split(card, "	")
 
 	if len(fields) != 6 {
