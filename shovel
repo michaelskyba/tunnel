@@ -186,7 +186,26 @@ browse_cards() {
 }
 
 start_review() {
-	echo "Starting the review"
+	tunnel new_cards "$1"
+
+	due=$(tunnel due "$1")
+	if [ -z "$due" ]
+	then
+		clear
+		echo "
+You have no reviews due.
+Come back tomorrow, or after adding new cards.
+Press Enter to continue.
+"
+		read
+
+		main_menu "$1"
+	fi
+
+	for card in $due
+	do
+		echo "Do $card"
+	done
 
 	exit
 }
