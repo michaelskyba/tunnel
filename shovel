@@ -94,7 +94,7 @@ Press Ctrl+c to exit.
 			echo "
 Your card was successfully added to '$1'.
 Press Enter to continue.
-			"
+"
 
 			read
 			main_menu "$1" ;;
@@ -104,6 +104,19 @@ Press Enter to continue.
 }
 
 modify_card() {
+	clear
+
+	fzf --version > /dev/null 2>&1 || broken=1
+	if [ "$broken" ]
+	then
+		echo "
+You do not have fzf installed, which is used for selection.
+Press Enter to go back to the main menu.
+"
+		read
+		main_menu "$1"
+	fi
+
 	echo "Pick a card to modify."
 	echo "Press Enter to continue."
 	read
