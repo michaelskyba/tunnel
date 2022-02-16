@@ -6,6 +6,52 @@ input() {
 	export sel
 }
 
+card_input() {
+	clear
+	echo "
+Enter a front side for the card.
+- Tabs cannot be used in cards, so they will be converted to spaces.
+- Press Ctrl+c if you wish to exit.
+"
+	input
+	front="$(echo "$sel" | sed "s/	/    /g")"
+
+	clear
+	echo "
+Enter a back side for the card.
+- Tabs cannot be used in cards, so they will be converted to spaces.
+- Press Ctrl+c if you wish to exit.
+"
+	input
+	back="$(echo "$sel" | sed "s/	/    /g")"
+
+	while :
+	do
+		clear
+		echo "
+Your card's front, surrounded by pipes:
+|$front|
+Your card's back, surrounded by pipes:
+|$back|
+
+Press Ctrl+c to exit.
+
+1) Confirm
+2) Restart
+"
+
+		input
+		echo "$sel" | grep "^[1-2]$" && break
+	done
+
+	[ "$sel" = 2 ] \
+		&& card_input \
+		&& return
+
+	export front
+	export back
+}
+
 check_usage() {
 	[ -z "$1" ] \
 		&& echo "Usage: shovel <deck file>" \
@@ -49,58 +95,17 @@ Press Ctrl+c to exit.
 }
 
 add_card() {
-	clear
-	echo "
-Enter a front side for the card.
-- Tabs cannot be used in cards, so they will be converted to spaces.
-- Press Ctrl+c if you wish to exit.
-"
-	input
-	front="$(echo "$sel" | sed "s/	/    /g")"
+	card_input
+	echo "$front	$back" >> "$1"
 
 	clear
 	echo "
-Enter a back side for the card.
-- Tabs cannot be used in cards, so they will be converted to spaces.
-- Press Ctrl+c if you wish to exit.
-"
-	input
-	back="$(echo "$sel" | sed "s/	/    /g")"
-
-	while :
-	do
-		clear
-		echo "
-Your card's front, surrounded by pipes:
-|$front|
-Your card's back, surrounded by pipes:
-|$back|
-
-Press Ctrl+c to exit.
-
-1) Confirm
-2) Restart
-"
-
-		input
-		echo "$sel" | grep "^[1-2]$" && break
-	done
-
-	case "$sel" in
-		1)
-			echo "$front	$back" >> "$1"
-
-			clear
-			echo "
 Your card was successfully added to '$1'.
 Press Enter to continue.
 "
 
-			read
-			main_menu "$1" ;;
-
-		2) add_card "$1" ;;
-	esac
+	read
+	main_menu "$1"
 }
 
 modify_card() {
