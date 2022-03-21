@@ -82,7 +82,7 @@ func get_retry(filename string) string {
 	return fmt.Sprintf("%v/tunnel%v", tmp_dir, absolute)
 }
 
-// fail_list manipulates the deck retry file to account for a review.
+// update_retry manipulates the deck retry file to account for a review.
 // If this function is running, the assumption is that this card was
 // *validly* reviewed just now. So, either the card was due, or the card
 // was on the first cycle of the fail list.
