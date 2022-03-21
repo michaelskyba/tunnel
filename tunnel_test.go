@@ -1,11 +1,10 @@
-// Camel case forced
-
 package main
 
 import (
 	"testing"
 )
 
+// Camel case forced
 func TestNewCard(tests *testing.T) {
 	type test struct {
 		Input string
