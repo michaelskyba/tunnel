@@ -15,8 +15,7 @@ Shovel should work too, but I also haven't done many tests.
 ```sh
 git clone https://github.com/michaelskyba/tunnel
 cd tunnel
-go build tunnel.go
-su -c "cp tunnel /usr/local/bin/"
+su -c "go build -o /usr/local/bin/tunnel"
 su -c "cp shovel /usr/local/bin/" # Only if you care about shovel
 ```
 
