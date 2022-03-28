@@ -6,6 +6,7 @@ import (
 	"os"
 	"io/ioutil"
 	"strings"
+	"bufio"
 )
 
 // get_retry takes a relative filename of a deck file and returns the absolute
