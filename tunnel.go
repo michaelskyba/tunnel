@@ -1,15 +1,11 @@
 package main
 
 import (
-	"bufio"
-	"errors"
 	"fmt"
-	"io/ioutil"
 	"math"
 	"os"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func new_card(card string) string {
@@ -115,137 +111,24 @@ func main() {
 	switch os.Args[1] + strconv.Itoa(len_of_args) {
 
 	case "new_cards3":
-		filename := os.Args[2]
-
-		file, err := ioutil.ReadFile(filename)
-		handle(err, "Error: couldn't read deck file.")
-		lines := strings.Split(string(file), "\n")
-
-		// We only want to update the file if it's changed, just in case someone
-		// has a problem with the last modified date being updated
-		changed := false
-
-		for i, line := range lines {
-			lines[i] = new_card(line)
-
-			if lines[i] != line {
-				changed = true
-			}
-		}
-
-		if changed {
-			write_lines(filename, lines)
-		}
+		// filename
+		new_cards(os.Args[2])
 
 	case "due3":
-		file, err := os.Open(os.Args[2])
-		defer file.Close()
-		handle(err, "Error: couldn't read deck file.")
-
-		i := 0
-		scanner := bufio.NewScanner(file)
-
-		current_time := int(time.Now().Unix())
-		for scanner.Scan() {
-			if check_due(scanner.Text(), current_time) {
-				fmt.Println(i)
-			}
-
-			i++
-		}
+		// filename
+		deck_due(os.Args[2])
 
 	case "front4", "back4":
-		i, err := strconv.Atoi(os.Args[2])
-		handle(err, "Error: non-integer card number provided.")
-
-		card := get_line(os.Args[3], i)
-		fields := strings.Split(card, "	")
-
-		if len(fields) < 2 {
-			fmt.Fprintf(os.Stderr, "Error: line %v is not a valid card.\n", i)
-			os.Exit(1)
-		}
-
-		if os.Args[1] == "front" {
-			fmt.Println(fields[0])
-		} else {
-			fmt.Println(fields[1])
-		}
+		// side, line, filename
+		get_side(os.Args[1], os.Args[2], os.Args[3])
 
 	case "review5":
-		filename := os.Args[4]
-		file, err := ioutil.ReadFile(filename)
-		handle(err, "Error: couldn't read deck file.")
-		lines := strings.Split(string(file), "\n")
-
-		deck_index, err := strconv.Atoi(os.Args[2])
-		handle(err, "Error: non-integer card number provided.")
-		grade, err := strconv.Atoi(os.Args[3])
-		handle(err, "Error: non-integer grade number provided.")
-
-		current_time := int(time.Now().Unix())
-
-		// The deck file is expected to end with a newline, so
-		// e.g. len(lines) will be five if there are four cards.
-		// Accessing this fourth card would use the "3" index
-		// so we check if >= len(lines) - 1.
-		if deck_index < 0 || deck_index >= len(lines) - 1{
-			fmt.Fprintf(os.Stderr, "Error: no line %v in deck.\n", deck_index)
-			os.Exit(1)
-		}
-
-		// Not worth using get_line() because we need to update "lines"
-		for i, line := range lines {
-			if i == deck_index {
-				retry_filename := get_retry(filename)
-
-				// os.Args[2]: No point converting back to a
-				// string again when writing to the file later
-
-				is_due := check_due(line, current_time)
-				is_retry := check_retry(retry_filename, os.Args[2])
-
-				if is_due || is_retry {
-					lines[i] = review(line, grade, current_time)
-				} else {
-					fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", deck_index)
-					os.Exit(1)
-				}
-
-				if is_retry || (is_due && grade < 4) {
-
-					// There's no DRY benefit to having this as a function
-					// but I feel like it makes the contents of this switch case
-					// quite a bit more organized. Feel free to bully me if this
-					// is wrong style-wise.
-					update_retry(retry_filename, os.Args[2], grade)
-				}
-			}
-		}
-
-		write_lines(filename, lines)
+		// index (string), grade (string), filename
+		review_deck(os.Args[2], os.Args[3], os.Args[4])
 
 	case "retry3":
-		filename := get_retry(os.Args[2])
-		file, err := os.Open(filename)
-		defer file.Close()
-
-		// If the file doesn't exist, there are no retries to do
-		if errors.Is(err, os.ErrNotExist) {
-			os.Exit(0)
-		}
-		handle(err, "Error: couldn't read retry file.")
-
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			line := scanner.Text()
-
-			// The user only needs to worry about the first cycle
-			if line == "-" {
-				break
-			}
-			fmt.Println(line)
-		}
+		// filename
+		list_retry(os.Args[2])
 
 	default:
 		user_error()
