@@ -135,8 +135,11 @@ the others.
 
 ### Description of individual tunnel commands
 Note that commands only check for validity in the context of their own
-functions, so a card in your deck may be invalid even if e.g. ``front``
-doesn't tell you that it is.
+functions. For example:
+- ``front`` won't necssarily notify you about a provided invalid card because
+it only checks the first two TSV fields.
+- ``retry`` won't notify you that the provided deck doesn't exist, because it
+only checks the associated retry file.
 
 #### ``new_cards``
 ```sh
