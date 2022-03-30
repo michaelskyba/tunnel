@@ -10,9 +10,9 @@ import (
 	"errors"
 )
 
-// getRetry takes a relative filename of a deck file and returns the absolute
+// retryFilename takes a relative filename of a deck file and returns the absolute
 // filename of the related retry file
-func getRetry(filename string) string {
+func retryFilename(filename string) string {
 	absolute, err := filepath.Abs(filename)
 	handle(err, "Error: broken deck path.")
 
@@ -135,6 +135,9 @@ func updateRetry(filename, deckIndex string, grade int) {
 	writeLines(filename, lines)
 }
 
+// I don't like the ambiguous names "checkRetry" and "listRetry" but I can't
+// think of anything more descriptive.
+
 // checkRetry checks if a given index exists in a given retry file
 func checkRetry(filename, deckIndex string) bool {
 	file, err := os.Open(filename)
@@ -162,9 +165,9 @@ func checkRetry(filename, deckIndex string) bool {
 	return false
 }
 
-// tunnel retry
+// tunnel retry command
 func listRetry(deckFilename string) {
-	filename := getRetry(deckFilename)
+	filename := retryFilename(deckFilename)
 	file, err := os.Open(filename)
 	defer file.Close()
 

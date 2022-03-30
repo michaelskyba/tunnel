@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func review(card string, grade, currentTime int) string {
+func reviewCard(card string, grade, currentTime int) string {
 
 	if grade < 0 || grade > 5 {
 		fmt.Fprintf(os.Stderr, "Error: invalid grade '%v'.\n", grade)
@@ -92,16 +92,16 @@ func reviewDeck(indexStr, gradeStr, filename string) {
 	// Not worth using getLine() because we need to update "lines"
 	for i, line := range lines {
 		if i == deckIndex {
-			retryFilename := getRetry(filename)
+			retryFilename := retryFilename(filename)
 
 			// indexStr: No point converting back to a
 			// string again when writing to the file later
 
-			isDue := checkDue(line, currentTime)
+			isDue := isCardDue(line, currentTime)
 			isRetry := checkRetry(retryFilename, indexStr)
 
 			if isDue || isRetry {
-				lines[i] = review(line, grade, currentTime)
+				lines[i] = reviewCard(line, grade, currentTime)
 			} else {
 				fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", deckIndex)
 				os.Exit(1)

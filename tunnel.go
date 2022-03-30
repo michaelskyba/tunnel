@@ -7,7 +7,7 @@ import (
 func main() {
 	length := len(os.Args)
 	if length == 1 {
-		userError()
+		commandError()
 	}
 
 	commandName := os.Args[1]

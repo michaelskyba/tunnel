@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func userError() {
+func commandError() {
 	fmt.Println(`Valid commands:
 	tunnel new_cards <deck filename>
 	tunnel due <deck filename>
@@ -35,7 +35,7 @@ func validateCommand(name string, length int) {
 		}
 	}
 
-	userError()
+	commandError()
 }
 
 func handle(err error, message string) {

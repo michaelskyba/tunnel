@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func checkDue(card string, currentTime int) bool {
+func isCardDue(card string, currentTime int) bool {
 
 	// To be due, (last review date) + (inter-repetition interval)
 	// has to be before (current date)
@@ -46,7 +46,7 @@ func deckDue(filename string) {
 
 	currentTime := int(time.Now().Unix())
 	for scanner.Scan() {
-		if checkDue(scanner.Text(), currentTime) {
+		if isCardDue(scanner.Text(), currentTime) {
 			fmt.Println(i)
 		}
 
