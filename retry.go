@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"bufio"
+	"errors"
 )
 
 // getRetry takes a relative filename of a deck file and returns the absolute
@@ -159,4 +160,28 @@ func checkRetry(filename, deckIndex string) bool {
 	}
 
 	return false
+}
+
+// tunnel retry
+func listRetry(deckFilename string) {
+	filename := getRetry(deckFilename)
+	file, err := os.Open(filename)
+	defer file.Close()
+
+	// If the file doesn't exist, there are no retries to do
+	if errors.Is(err, os.ErrNotExist) {
+		os.Exit(0)
+	}
+	handle(err, "Error: couldn't read retry file.")
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		// The user only needs to worry about the first cycle
+		if line == "-" {
+			break
+		}
+		fmt.Println(line)
+	}
 }
