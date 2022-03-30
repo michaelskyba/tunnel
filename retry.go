@@ -16,19 +16,19 @@ func retryFilename(filename string) string {
 	absolute, err := filepath.Abs(filename)
 	handle(err, "Error: broken deck path.")
 
-	tmpDir := os.Getenv("TMPDIR")
-	if tmpDir == "" {
-		tmpDir = "/tmp"
+	dataDir := os.Getenv("XDG_DATA_HOME")
+	if dataDir == "" {
+		dataDir = os.Getenv("HOME") + "/.local/share"
 	}
 
 	path := strings.Split(absolute, "/")
-	outputPath := fmt.Sprintf("%v/tunnel%v", tmpDir, strings.Join(path[:len(path)-1], "/"))
+	outputPath := fmt.Sprintf("%v/tunnel%v", dataDir, strings.Join(path[:len(path)-1], "/"))
 
 	// Make sure retry file's parent directory exists
 	err = os.MkdirAll(outputPath, 0755)
 	handle(err, fmt.Sprintf("Error: couldn't create %v.", outputPath))
 
-	return fmt.Sprintf("%v/tunnel%v", tmpDir, absolute)
+	return fmt.Sprintf("%v/tunnel%v", dataDir, absolute)
 }
 
 // updateRetry manipulates the deck retry file to account for a review.
