@@ -9,35 +9,35 @@ import (
 	"bufio"
 )
 
-// get_retry takes a relative filename of a deck file and returns the absolute
+// getRetry takes a relative filename of a deck file and returns the absolute
 // filename of the related retry file
-func get_retry(filename string) string {
+func getRetry(filename string) string {
 	absolute, err := filepath.Abs(filename)
 	handle(err, "Error: broken deck path.")
 
-	tmp_dir := os.Getenv("TMPDIR")
-	if tmp_dir == "" {
-		tmp_dir = "/tmp"
+	tmpDir := os.Getenv("TMPDIR")
+	if tmpDir == "" {
+		tmpDir = "/tmp"
 	}
 
 	path := strings.Split(absolute, "/")
-	output_path := fmt.Sprintf("%v/tunnel%v", tmp_dir, strings.Join(path[:len(path)-1], "/"))
+	outputPath := fmt.Sprintf("%v/tunnel%v", tmpDir, strings.Join(path[:len(path)-1], "/"))
 
 	// Make sure retry file's parent directory exists
-	err = os.MkdirAll(output_path, 0755)
-	handle(err, fmt.Sprintf("Error: couldn't create %v.", output_path))
+	err = os.MkdirAll(outputPath, 0755)
+	handle(err, fmt.Sprintf("Error: couldn't create %v.", outputPath))
 
-	return fmt.Sprintf("%v/tunnel%v", tmp_dir, absolute)
+	return fmt.Sprintf("%v/tunnel%v", tmpDir, absolute)
 }
 
-// update_retry manipulates the deck retry file to account for a review.
+// updateRetry manipulates the deck retry file to account for a review.
 // If this function is running, the assumption is that this card was
 // *validly* reviewed just now. So, either the card was due, or the card
 // was on the first cycle of the fail list.
-func update_retry(filename, deck_index string, grade int) {
+func updateRetry(filename, deckIndex string, grade int) {
 
 	// The discarding of the error here is deliberate. If the file doesn't
-	// exist, it's fine, because we'll create it in write_lines() later. If the
+	// exist, it's fine, because we'll create it in writeLines() later. If the
 	// permissions are wrong, we'll get an error when we write to the file, which
 	// means that the user will still know about it. It would be a better UX to catch
 	// it early but I don't know how to do that idiomatically... I can't find any
@@ -47,16 +47,16 @@ func update_retry(filename, deck_index string, grade int) {
 	// If the file doesn't exist, lines == []string{""}, which works fine.
 	lines := strings.Split(string(file), "\n")
 
-	second_cycle := false
-	card_found := false
-	var retry_index int
+	secondCycle := false
+	cardFound := false
+	var retryIndex int
 
 	// If the line is already there, we need to add it to the next retry cycle
 	for i, line := range lines {
 
 		if line == "-" {
-			if !second_cycle {
-				second_cycle = true
+			if !secondCycle {
+				secondCycle = true
 				continue
 			}
 
@@ -65,21 +65,21 @@ func update_retry(filename, deck_index string, grade int) {
 			os.Exit(1)
 		}
 
-		if line == deck_index {
+		if line == deckIndex {
 
 			// It's impossible to have more than two retry cycles by default.
 			// So, if we're seeing the line number in the retry cycle, it has
 			// to be in the first cycle, not the second cycle.
-			if second_cycle {
+			if secondCycle {
 				fmt.Fprintln(os.Stderr, "Error: broken retry file.")
 				os.Exit(1)
 			}
 
 			// We can't stop the loop because we still need to know if
 			// the retry file has one cycle or two cycles
-			if !card_found {
-				card_found = true
-				retry_index = i
+			if !cardFound {
+				cardFound = true
+				retryIndex = i
 
 			// Multiple of the same card in the retry file
 			} else {
@@ -94,17 +94,17 @@ func update_retry(filename, deck_index string, grade int) {
 		lines = lines[:len(lines)-1]
 	}
 
-	if card_found {
+	if cardFound {
 
 		// We're moving the line to the second cycle, so we
 		// want to remove it from the first cycle
-		lines = append(lines[:retry_index], lines[retry_index+1:]...)
+		lines = append(lines[:retryIndex], lines[retryIndex+1:]...)
 
 		if grade < 4 {
-			if second_cycle {
-				lines = append(lines, deck_index)
+			if secondCycle {
+				lines = append(lines, deckIndex)
 			} else {
-				lines = append(lines, "-", deck_index)
+				lines = append(lines, "-", deckIndex)
 			}
 		}
 
@@ -117,7 +117,7 @@ func update_retry(filename, deck_index string, grade int) {
 		}
 
 	} else {
-		lines = append(lines, deck_index)
+		lines = append(lines, deckIndex)
 	}
 
 	if len(lines) == 0 {
@@ -131,11 +131,11 @@ func update_retry(filename, deck_index string, grade int) {
 	// - It makes it easy to edit in Kakoune without problems
 	lines = append(lines, "")
 
-	write_lines(filename, lines)
+	writeLines(filename, lines)
 }
 
-// check_retry checks if a given index exists in a given retry file
-func check_retry(filename, deck_index string) bool {
+// checkRetry checks if a given index exists in a given retry file
+func checkRetry(filename, deckIndex string) bool {
 	file, err := os.Open(filename)
 	defer file.Close()
 
@@ -153,7 +153,7 @@ func check_retry(filename, deck_index string) bool {
 		// the cards from the second retry cycle
 		if line == "-" {
 			return false
-		} else if line == deck_index {
+		} else if line == deckIndex {
 			return true
 		}
 	}

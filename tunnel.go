@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func new_card(card string) string {
+func newCard(card string) string {
 
 	// A new card only has two fields: front and back
 	if len(strings.Split(card, "	")) != 2 {
@@ -18,7 +18,7 @@ func new_card(card string) string {
 	return card + "	0	2.5	0	1617249600"
 }
 
-func check_due(card string, current_time int) bool {
+func checkDue(card string, currentTime int) bool {
 
 	// To be due, (last review date) + (inter-repetition interval)
 	// has to be before (current date)
@@ -32,19 +32,19 @@ func check_due(card string, current_time int) bool {
 
 	interval, err := strconv.Atoi(fields[4])
 	handle(err, fmt.Sprintf("Error: card '%v' is invalid.\n", card))
-	last_review, err := strconv.Atoi(fields[5])
+	lastReview, err := strconv.Atoi(fields[5])
 	handle(err, fmt.Sprintf("Error: card '%v' is invalid.\n", card))
 
 	// Interval is in days, so we multiply by the number of seconds
 	// in a day, which is 86400
 
-	if last_review + interval*86400 < current_time {
+	if lastReview + interval*86400 < currentTime {
 		return true
 	}
 	return false
 }
 
-func review(card string, grade, current_time int) string {
+func review(card string, grade, currentTime int) string {
 
 	if grade < 0 || grade > 5 {
 		fmt.Fprintf(os.Stderr, "Error: invalid grade '%v'.\n", grade)
@@ -96,41 +96,41 @@ func review(card string, grade, current_time int) string {
 	fields[2] = strconv.Itoa(n)
 	fields[3] = strconv.FormatFloat(EF, 'f', -1, 64)
 	fields[4] = strconv.Itoa(I)
-	fields[5] = strconv.Itoa(current_time)
+	fields[5] = strconv.Itoa(currentTime)
 
 	return strings.Join(fields, "	")
 }
 
 func main() {
-	len_of_args := len(os.Args)
+	argsLength := len(os.Args)
 
-	if len_of_args == 1 {
-		user_error()
+	if argsLength == 1 {
+		userError()
 	}
 
-	switch os.Args[1] + strconv.Itoa(len_of_args) {
+	switch os.Args[1] + strconv.Itoa(argsLength) {
 
 	case "new_cards3":
 		// filename
-		new_cards(os.Args[2])
+		newCards(os.Args[2])
 
 	case "due3":
 		// filename
-		deck_due(os.Args[2])
+		deckDue(os.Args[2])
 
 	case "front4", "back4":
 		// side, line, filename
-		get_side(os.Args[1], os.Args[2], os.Args[3])
+		getSide(os.Args[1], os.Args[2], os.Args[3])
 
 	case "review5":
 		// index (string), grade (string), filename
-		review_deck(os.Args[2], os.Args[3], os.Args[4])
+		reviewDeck(os.Args[2], os.Args[3], os.Args[4])
 
 	case "retry3":
 		// filename
-		list_retry(os.Args[2])
+		listRetry(os.Args[2])
 
 	default:
-		user_error()
+		userError()
 	}
 }

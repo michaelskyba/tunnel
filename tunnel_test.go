@@ -27,10 +27,10 @@ func TestNewCard(tests *testing.T) {
 
 	// Iterate over test cases
 	var got string
-	for _, test_case := range cases {
-		got = new_card(test_case.Input)
-		if got != test_case.Output {
-			tests.Errorf("\nnew_card() Input:\n%v\n\nOutput\n%v\n\nCorrect output\n%v", test_case.Input, got, test_case.Output)
+	for _, testCase := range cases {
+		got = newCard(testCase.Input)
+		if got != testCase.Output {
+			tests.Errorf("\nnewCard() Input:\n%v\n\nOutput\n%v\n\nCorrect output\n%v", testCase.Input, got, testCase.Output)
 		}
 	}
 }

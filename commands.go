@@ -12,7 +12,7 @@ import (
 )
 
 // tunnel new_cards
-func new_cards(filename string) {
+func newCards(filename string) {
 	file, err := ioutil.ReadFile(filename)
 	handle(err, "Error: couldn't read deck file.")
 	lines := strings.Split(string(file), "\n")
@@ -22,7 +22,7 @@ func new_cards(filename string) {
 	changed := false
 
 	for i, line := range lines {
-		lines[i] = new_card(line)
+		lines[i] = newCard(line)
 
 		if lines[i] != line {
 			changed = true
@@ -30,12 +30,12 @@ func new_cards(filename string) {
 	}
 
 	if changed {
-		write_lines(filename, lines)
+		writeLines(filename, lines)
 	}
 }
 
 // tunnel due
-func deck_due(filename string) {
+func deckDue(filename string) {
 	file, err := os.Open(filename)
 	defer file.Close()
 	handle(err, "Error: couldn't read deck file.")
@@ -43,9 +43,9 @@ func deck_due(filename string) {
 	i := 0
 	scanner := bufio.NewScanner(file)
 
-	current_time := int(time.Now().Unix())
+	currentTime := int(time.Now().Unix())
 	for scanner.Scan() {
-		if check_due(scanner.Text(), current_time) {
+		if checkDue(scanner.Text(), currentTime) {
 			fmt.Println(i)
 		}
 
@@ -54,11 +54,11 @@ func deck_due(filename string) {
 }
 
 // tunnel front and tunnel back
-func get_side(side, line, filename string) {
+func getSide(side, line, filename string) {
 	i, err := strconv.Atoi(line)
 	handle(err, "Error: non-integer card number provided.")
 
-	card := get_line(filename, i)
+	card := getLine(filename, i)
 	fields := strings.Split(card, "	")
 
 	if len(fields) < 2 {
@@ -74,62 +74,62 @@ func get_side(side, line, filename string) {
 }
 
 // tunnel review
-func review_deck(index_str, grade_str, filename string) {
+func reviewDeck(indexStr, gradeStr, filename string) {
 	file, err := ioutil.ReadFile(filename)
 	handle(err, "Error: couldn't read deck file.")
 	lines := strings.Split(string(file), "\n")
 
-	deck_index, err := strconv.Atoi(index_str)
+	deckIndex, err := strconv.Atoi(indexStr)
 	handle(err, "Error: non-integer card number provided.")
-	grade, err := strconv.Atoi(grade_str)
+	grade, err := strconv.Atoi(gradeStr)
 	handle(err, "Error: non-integer grade number provided.")
 
-	current_time := int(time.Now().Unix())
+	currentTime := int(time.Now().Unix())
 
 	// The deck file is expected to end with a newline, so
 	// e.g. len(lines) will be five if there are four cards.
 	// Accessing this fourth card would use the "3" index
 	// so we check if >= len(lines) - 1.
-	if deck_index < 0 || deck_index >= len(lines) - 1{
-		fmt.Fprintf(os.Stderr, "Error: no line %v in deck.\n", deck_index)
+	if deckIndex < 0 || deckIndex >= len(lines) - 1{
+		fmt.Fprintf(os.Stderr, "Error: no line %v in deck.\n", deckIndex)
 		os.Exit(1)
 	}
 
-	// Not worth using get_line() because we need to update "lines"
+	// Not worth using getLine() because we need to update "lines"
 	for i, line := range lines {
-		if i == deck_index {
-			retry_filename := get_retry(filename)
+		if i == deckIndex {
+			retryFilename := getRetry(filename)
 
-			// os.Args[2]: No point converting back to a
+			// indexStr: No point converting back to a
 			// string again when writing to the file later
 
-			is_due := check_due(line, current_time)
-			is_retry := check_retry(retry_filename, index_str)
+			isDue := checkDue(line, currentTime)
+			isRetry := checkRetry(retryFilename, indexStr)
 
-			if is_due || is_retry {
-				lines[i] = review(line, grade, current_time)
+			if isDue || isRetry {
+				lines[i] = review(line, grade, currentTime)
 			} else {
-				fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", deck_index)
+				fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", deckIndex)
 				os.Exit(1)
 			}
 
-			if is_retry || (is_due && grade < 4) {
+			if isRetry || (isDue && grade < 4) {
 
 				// There's no DRY benefit to having this as a function
 				// but I feel like it makes the contents of this switch case
 				// quite a bit more organized. Feel free to bully me if this
 				// is wrong style-wise.
-				update_retry(retry_filename, index_str, grade)
+				updateRetry(retryFilename, indexStr, grade)
 			}
 		}
 	}
 
-	write_lines(filename, lines)
+	writeLines(filename, lines)
 }
 
 // tunnel retry
-func list_retry(deck_filename string) {
-	filename := get_retry(deck_filename)
+func listRetry(deckFilename string) {
+	filename := getRetry(deckFilename)
 	file, err := os.Open(filename)
 	defer file.Close()
 

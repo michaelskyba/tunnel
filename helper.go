@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func user_error() {
+func userError() {
 	fmt.Println(`Valid commands:
 	tunnel new_cards <deck filename>
 	tunnel due <deck filename>
@@ -26,9 +26,9 @@ func handle(err error, message string) {
 	}
 }
 
-func get_line(filename string, target int) string {
+func getLine(filename string, target int) string {
 
-	// O(n) time; don't use get_line in a loop
+	// O(n) time; don't use getLine in a loop
 
 	if target >= 0 {
 		file, err := os.Open(filename)
@@ -53,7 +53,7 @@ func get_line(filename string, target int) string {
 	return ""
 }
 
-func write_lines(filename string, lines []string) {
+func writeLines(filename string, lines []string) {
 	err := ioutil.WriteFile(filename, []byte(strings.Join(lines, "\n")), 0644)
 	handle(err, fmt.Sprintf("Error: couldn't write to %v.", filename))
 }
