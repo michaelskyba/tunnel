@@ -2,39 +2,37 @@ package main
 
 import (
 	"os"
-	"strconv"
 )
 
 func main() {
-	argsLength := len(os.Args)
-
-	if argsLength == 1 {
+	length := len(os.Args)
+	if length == 1 {
 		userError()
 	}
 
-	switch os.Args[1] + strconv.Itoa(argsLength) {
+	commandName := os.Args[1]
+	validateCommand(commandName, length)
 
-	case "new_cards3":
+	switch commandName {
+
+	case "new_cards":
 		// filename
 		newCards(os.Args[2])
 
-	case "due3":
+	case "due":
 		// filename
 		deckDue(os.Args[2])
 
-	case "front4", "back4":
+	case "front", "back":
 		// side, line, filename
-		getSide(os.Args[1], os.Args[2], os.Args[3])
+		getSide(commandName, os.Args[2], os.Args[3])
 
-	case "review5":
+	case "review":
 		// index (string), grade (string), filename
 		reviewDeck(os.Args[2], os.Args[3], os.Args[4])
 
-	case "retry3":
+	case "retry":
 		// filename
 		listRetry(os.Args[2])
-
-	default:
-		userError()
 	}
 }

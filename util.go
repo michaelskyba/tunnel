@@ -19,6 +19,25 @@ See README.md for more information.`)
 	os.Exit(1)
 }
 
+func validateCommand(name string, length int) {
+	valid := []bool{
+		name == "new_cards" && length == 3,
+		name == "due"       && length == 3,
+		name == "front"     && length == 4,
+		name == "back"      && length == 4,
+		name == "review"    && length == 5,
+		name == "retry"     && length == 3,
+	}
+
+	for _, condition := range valid {
+		if condition {
+			return
+		}
+	}
+
+	userError()
+}
+
 func handle(err error, message string) {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, message)
