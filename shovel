@@ -3,6 +3,9 @@
 # Almost all of the code here has to do with the UI.
 # As you can see, the actual tunnel interaction is very simple.
 
+# The "pause" variable used with read is in case a variable is required
+# https://pubs.opengroup.org/onlinepubs/9699919799/utilities/read.html
+
 input() {
 	printf "> "
 	read -r sel
@@ -106,7 +109,7 @@ Your card was successfully added to '$deck'.
 Press Enter to continue.
 "
 
-	read -r
+	read -r pause
 	main_menu
 }
 
@@ -120,7 +123,7 @@ modify_card() {
 You do not have fzf installed, which is used for selection.
 Press Enter to go back to the main menu.
 "
-		read -r
+		read -r pause
 		main_menu
 	fi
 
@@ -146,7 +149,7 @@ Press Enter to continue.
 		i=$((i+1))
 	done < "$deck"
 
-	read -r
+	read -r pause
 
 	sel=$(fzf < "$file")
 	[ -z "$sel" ] && main_menu
@@ -173,7 +176,7 @@ Your card was successfully modified in '$deck'.
 Press Enter to continue.
 "
 
-	read -r
+	read -r pause
 	main_menu
 }
 
@@ -198,7 +201,7 @@ You have no reviews due.
 Come back tomorrow, or after adding new cards.
 Press Enter to continue.
 "
-		read -r
+		read -r pause
 
 		main_menu
 	fi
@@ -225,7 +228,7 @@ You have finished all of your reviews!
 Come back tomorrow, or after adding new cards.
 Press Enter to continue.
 	"
-	read -r
+	read -r pause
 
 	main_menu
 }
@@ -243,7 +246,7 @@ $front
 Try recalling the back of the card.
 Once you've tried your best, press Enter to flip the card.
 "
-	read -r
+	read -r pause
 
 	while :
 	do
