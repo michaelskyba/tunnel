@@ -49,23 +49,23 @@ Press Ctrl+c to exit.
 		echo "$sel" | grep "^[1-2]$" && break
 	done
 
-	[ "$sel" = 2 ] \
-		&& card_input \
-		&& return
+	[ "$sel" = 2 ] &&
+		card_input &&
+		return
 
 	export front
 	export back
 }
 
 check_usage() {
-	[ -z "$deck" ] \
-		&& echo "Usage: shovel <deck file>" \
-		&& exit 1
+	[ -z "$deck" ] &&
+		echo "Usage: shovel <deck file>" &&
+		exit 1
 
 	[ -f "$deck" ] || exists=0
-	[ "$exists" ] \
-		&& echo "$deck: Not a file" \
-		&& exit 1
+	[ "$exists" ] &&
+		echo "$deck: Not a file" &&
+		exit 1
 
 	# I don't know if it's my computer but for some reason
 	# the script dies without an echo from check_usage
@@ -152,7 +152,7 @@ Press Enter to continue.
 	read -r pause
 
 	sel=$(fzf < "$file")
-	[ -z "$sel" ] && main_menu
+	[ "$sel" ] || main_menu
 
 	line_number=${sel%%.*}
 
@@ -214,7 +214,7 @@ Press Enter to continue.
 	while :
 	do
 		retry=$(tunnel retry "$deck")
-		[ -z "$retry" ] && break
+		[ "$retry" ] || break
 
 		for card in $retry
 		do
