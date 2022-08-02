@@ -9,14 +9,13 @@ import (
 )
 
 func commandError() {
-	fmt.Println(`Valid commands:
+	printError(`Valid commands:
 	tunnel new_cards <deck filename>
 	tunnel due <deck filename>
 	tunnel <front|back> <line number> <deck filename>
 	tunnel review <line number> <score> <deck filename>
 	tunnel retry <deck filename>
 See README.md for more information.`)
-	os.Exit(1)
 }
 
 func validateCommand(name string, length int) {
@@ -40,9 +39,13 @@ func validateCommand(name string, length int) {
 
 func handle(err error, message string) {
 	if err != nil {
-		fmt.Fprintln(os.Stderr, message)
-		os.Exit(1)
+		printError(message)
 	}
+}
+
+func printError(message string) {
+	fmt.Fprintln(os.Stderr, message)
+	os.Exit(1)
 }
 
 func getLine(filename string, target int) string {
@@ -66,9 +69,7 @@ func getLine(filename string, target int) string {
 		}
 	}
 
-	fmt.Fprintf(os.Stderr, "Error: no line %v in deck.\n", target)
-	os.Exit(1)
-
+	printError(fmt.Sprintf("Error: no line %v in deck.\n", target))
 	return ""
 }
 

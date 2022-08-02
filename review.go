@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"fmt"
 	"strconv"
 	"strings"
@@ -13,15 +12,13 @@ import (
 func reviewCard(card string, grade, currentTime int) string {
 
 	if grade < 0 || grade > 5 {
-		fmt.Fprintf(os.Stderr, "Error: invalid grade '%v'.\n", grade)
-		os.Exit(1)
+		printError(fmt.Sprintf("Error: invalid grade '%v'.\n", grade))
 	}
 
 	fields := strings.Split(card, "	")
 
 	if len(fields) != 6 {
-		fmt.Fprintf(os.Stderr, "Error: card '%v' is invalid.\n", card)
-		os.Exit(1)
+		printError(fmt.Sprintf("Error: card '%v' is invalid.\n", card))
 	}
 
 	// n: repetition number
@@ -85,8 +82,7 @@ func reviewDeck(indexStr, gradeStr, filename string) {
 	// Accessing this fourth card would use the "3" index
 	// so we check if >= len(lines) - 1.
 	if deckIndex < 0 || deckIndex >= len(lines) - 1{
-		fmt.Fprintf(os.Stderr, "Error: no line %v in deck.\n", deckIndex)
-		os.Exit(1)
+		printError(fmt.Sprintf("Error: no line %v in deck.\n", deckIndex))
 	}
 
 	// Not worth using getLine() because we need to update "lines"
@@ -103,8 +99,7 @@ func reviewDeck(indexStr, gradeStr, filename string) {
 			if isDue || isRetry {
 				lines[i] = reviewCard(line, grade, currentTime)
 			} else {
-				fmt.Fprintf(os.Stderr, "Error: card %v is not due for review.\n", deckIndex)
-				os.Exit(1)
+				printError(fmt.Sprintf("Error: card %v is not due for review.\n", deckIndex))
 			}
 
 			if isRetry || (isDue && grade < 4) {

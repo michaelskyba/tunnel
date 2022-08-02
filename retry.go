@@ -62,8 +62,7 @@ func updateRetry(filename, deckIndex string, grade int) {
 			}
 
 			// There is more than one "-"
-			fmt.Fprintln(os.Stderr, "Error: broken retry file.")
-			os.Exit(1)
+			printError("Error: broken retry file.")
 		}
 
 		if line == deckIndex {
@@ -72,8 +71,7 @@ func updateRetry(filename, deckIndex string, grade int) {
 			// So, if we're seeing the line number in the retry cycle, it has
 			// to be in the first cycle, not the second cycle.
 			if secondCycle {
-				fmt.Fprintln(os.Stderr, "Error: broken retry file.")
-				os.Exit(1)
+				printError("Error: broken retry file.")
 			}
 
 			// We can't stop the loop because we still need to know if
@@ -84,8 +82,7 @@ func updateRetry(filename, deckIndex string, grade int) {
 
 			// Multiple of the same card in the retry file
 			} else {
-				fmt.Fprintln(os.Stderr, "Error: broken retry file.")
-				os.Exit(1)
+				printError("Error: broken retry file.")
 			}
 		}
 	}

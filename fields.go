@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"io/ioutil"
 	"strings"
 	"fmt"
@@ -49,8 +48,7 @@ func getSide(side, line, filename string) {
 	fields := strings.Split(card, "	")
 
 	if len(fields) < 2 {
-		fmt.Fprintf(os.Stderr, "Error: line %v is not a valid card.\n", i)
-		os.Exit(1)
+		printError(fmt.Sprintf("Error: line %v is not a valid card.\n", i))
 	}
 
 	if side == "front" {
