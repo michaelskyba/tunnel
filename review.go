@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"math"
 	"strconv"
 	"strings"
-	"math"
-	"io/ioutil"
 	"time"
 )
 
@@ -81,7 +81,7 @@ func reviewDeck(indexStr, gradeStr, filename string) {
 	// e.g. len(lines) will be five if there are four cards.
 	// Accessing this fourth card would use the "3" index
 	// so we check if >= len(lines) - 1.
-	if deckIndex < 0 || deckIndex >= len(lines) - 1{
+	if deckIndex < 0 || deckIndex >= len(lines)-1 {
 		printError(fmt.Sprintf("Error: no line %v in deck.\n", deckIndex))
 	}
 

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"strings"
-	"strconv"
+	"bufio"
 	"fmt"
 	"os"
-	"bufio"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -29,7 +29,7 @@ func isCardDue(card string, currentTime int) bool {
 	// Interval is in days, so we multiply by the number of seconds
 	// in a day, which is 86400
 
-	if lastReview + interval*86400 < currentTime {
+	if lastReview+interval*86400 < currentTime {
 		return true
 	}
 	return false

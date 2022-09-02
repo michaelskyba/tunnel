@@ -1,10 +1,10 @@
 package main
 
 import (
-	"io/ioutil"
-	"strings"
 	"fmt"
+	"io/ioutil"
 	"strconv"
+	"strings"
 )
 
 func newCard(card string) string {

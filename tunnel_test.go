@@ -7,7 +7,7 @@ import (
 // Camel case forced
 func TestNewCard(tests *testing.T) {
 	type test struct {
-		Input string
+		Input  string
 		Output string
 	}
 

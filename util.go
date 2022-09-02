@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"bufio"
+	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -21,11 +21,11 @@ See README.md for more information.`)
 func validateCommand(name string, length int) {
 	valid := []bool{
 		name == "new_cards" && length == 3,
-		name == "due"       && length == 3,
-		name == "front"     && length == 4,
-		name == "back"      && length == 4,
-		name == "review"    && length == 5,
-		name == "retry"     && length == 3,
+		name == "due" && length == 3,
+		name == "front" && length == 4,
+		name == "back" && length == 4,
+		name == "review" && length == 5,
+		name == "retry" && length == 3,
 	}
 
 	for _, condition := range valid {

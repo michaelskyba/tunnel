@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"path/filepath"
-	"os"
-	"io/ioutil"
-	"strings"
 	"bufio"
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 // retryFilename takes a relative filename of a deck file and returns the absolute
@@ -80,8 +80,8 @@ func updateRetry(filename, deckIndex string, grade int) {
 				cardFound = true
 				retryIndex = i
 
-			// Multiple of the same card in the retry file
 			} else {
+				// Multiple of the same card in the retry file
 				printError("Error: broken retry file.")
 			}
 		}
