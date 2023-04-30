@@ -3,5 +3,12 @@ go build -buildvcs=false -C src -o /usr/local/bin/tunnel
 
 if [ "$1" = util ]
 then
-	cp util/* /usr/local/bin/
+	cd util
+
+	kak_dir=$XDG_CONFIG_HOME/kak
+	[ -d "$kak_dir" ] &&
+		echo "Copying tunnel.kak to $kak_dir/" &&
+		cp tunnel.kak "$kak_dir"
+
+	cp $(ls | grep -v "\.kak$" | grep -v "\.png$" | grep -v "\.md$") /usr/local/bin/
 fi
