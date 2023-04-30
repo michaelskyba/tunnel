@@ -94,10 +94,10 @@ Au
 ~/tunnel $ tunnel retry example_deck
 ~/tunnel $ # Reviews are done for this deck!
 ```
-That's it! Understand, though, that these tunnel commands are never supposed
-to be run manually as I showed here. This "tutorial" section is meant to
-give you a general understanding of the order, so that making your own wrapper
-(like shovel, but more fitted to your needs) will have less friction. Read the
+That's it! Understand, though, that these tunnel commands are not intended to be
+run manually as I showed here. This "tutorial" section is meant to give you a
+general understanding of the order, so that making your own wrapper (like
+shovel, but more fitted to your needs) will have less friction. Read the
 documentation for each of the commands involved to learn more.
 
 ### Deck file
@@ -108,8 +108,8 @@ tabs before running tunnel and then convert them back to commas afterwards.
 Cards are inputted in the syntax ``front<tab>back``. In reviews, you will
 look at the front of the card and attempt to recall the back of the card. This
 is the only type of card, unlike e.g. Anki, which has many card types. You can
-emulate other card types easily, though. For instance, I have a macro in my text
-editor that converts
+emulate other card types easily, though. For instance, ``util/parse_cloze`` can
+convert
 ```
 [Cellular respiration] happens in [every cell's mitochondrion]
 ```
@@ -301,3 +301,6 @@ you fail card 1 and thus the retry file contains card 1, there's no way tunnel
 will know if you suddenly swap the first and second lines of your file. Then,
 retry will have inaccurate information. So, if you want to modify the order of
 the deck, finish all reviews first.
+
+### util
+See [the util/ README](https://github.com/michaelskyba/tunnel/tree/main/util).

@@ -12,7 +12,7 @@ This can be used for converting legacy [scripture](https://github.com/michaelsky
 you want to be separated into a card in square brackets. Then, pass it to
 parse_cloze as stdin and capture the stdout.
 
-```sh
+```
 $ cat input
 The [terminal arm] of an angle in [standard position] is placed [in any direction, depending on the measurement of the angle]
 $ parse_cloze < input
