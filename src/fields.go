@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-func newCard(card string) string {
+func newCard(card string, currentTime int) string {
 	// A new card only has two fields: front and back
 	if len(strings.Split(card, "	")) != 2 {
 		return card
 	}
 
-	return card + "	0	2.5	0	1617249600"
+	return fmt.Sprintf("%v	0	2.5	0	%v", card, currentTime)
 }
 
 // tunnel new_cards
@@ -27,7 +27,7 @@ func newCards(filename string) {
 	changed := false
 
 	for i, line := range lines {
-		lines[i] = newCard(line)
+		lines[i] = newCard(line, 1617249600)
 
 		if lines[i] != line {
 			changed = true
