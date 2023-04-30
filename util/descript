@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Edit this if you're not using TSV
+DELIM="	"
+
+doc='
+descript: convert scripture decks to tunnel decks
+usage: descript <deck file>
+
+This prints to stdout so you can do something like
+
+descript deck > deck2
+diff deck deck2
+
+and ensure that it worked
+
+This script assumes TSV splitting - edit the $DELIM variable at the top
+if you are using something else
+'
+
+! [ -f "$1" ] &&
+	echo "$doc" &&
+	exit 1
+
+while read -r line
+do
+	splits=$(echo "$line" | sed "s/[^$DELIM]//g" | awk '{ print length }')
+	[ ! "$splits" = 5 ]  &&
+		echo "$line" &&
+		continue
+
+	I=$(echo "$line" | cut -d"$DELIM" -f 5)
+	I=${I%%.*}
+
+	date=$(echo "$line" | cut -d"$DELIM" -f 6)
+	date=$(date -d "$date" +%s)
+
+	else=$(echo "$line" | cut -d"$DELIM" -f "1-4")
+	echo "$else$DELIM$I$DELIM$date"
+done < "$1"
