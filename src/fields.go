@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func newCard(card string, currentTime int) string {
@@ -26,8 +27,13 @@ func newCards(filename string) {
 	// has a problem with the last modified date being updated
 	changed := false
 
+	// If it's one second before the current (creation) date, it guarantees
+	// that it will be due. This seems more elegant than having a random
+	// past date like 1617249600
+	lastReview := int(time.Now().Unix()) - 1
+
 	for i, line := range lines {
-		lines[i] = newCard(line, 1617249600)
+		lines[i] = newCard(line, lastReview)
 
 		if lines[i] != line {
 			changed = true

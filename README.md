@@ -123,14 +123,17 @@ to
 If you want a line to act as a comment, don't put any tabs in it. Blank lines
 are fine too.
 
-After running ``new_cards``, you will see that ``0x2.5x0x1617249600`` (where
-``x``s are tabs) is added. The first 0 is the repetition number, the 2.5 is the
-easiness factor, the second 0 is the inter-repetition interval, and the epoch
-time is that of the last review. Since there haven't been any reviews for
-new cards, the date is set to an arbitrary past date. As you review your cards,
-these values will be updated. If you want to modify a card's front or backside,
-feel free to edit the first two values (front and back), but never touch any of
-the others.
+After running ``new_cards``, you will see that
+```
+0	2.5	0	<epoch time>
+```
+is added. The first 0 is the repetition number, the 2.5 is the easiness factor,
+the second 0 is the inter-repetition interval, and the epoch time is that of the
+last review. Since there haven't been any reviews for new cards, the date is set
+to one second before the card was created. As you review your cards, these
+values will be updated. If you want to modify a card's front or backside, feel
+free to edit the first two values (front and back), but do not manually change
+the others unless you have a good understand of their function.
 
 ### Description of individual tunnel commands
 Note that commands only check for validity in the context of their own
@@ -145,23 +148,28 @@ only checks the associated retry file.
 ~ $ cat deck
 a	b
 c	d
+~ $ date +%s
+1696219200
 ~ $ tunnel new_cards deck
 ~ $ cat deck
-a	b	0	2.5	0	1617249600
-c	d	0	2.5	0	1617249600
+a	b	0	2.5	0	1696219199
+c	d	0	2.5	0	1696219199
 ```
 
 ``new_cards``'s syntax is ``tunnel new_cards <deck filename>``. It will modify
 the file as to add default SM-2 values to new card lines. Specifically, it
-appends ``0	2.5	0	1617249600``.
+appends
+```
+0	2.5	0	<current epoch time -1s>
+``` .
 
 #### ``due``
 ```sh
-~ $ date
-Thu Dec  9 03:04:51 PM EST 2021
+~ $ date +%s
+1639080291
 ~ $ cat letters
-a	b	0	2.5	0	1617249600
-c	d	0	2.5	0	1617249600
+a	b	0	2.5	0	1639080290
+c	d	0	2.5	0	1639080290
 e	f	5	3	132	1637470800
 h	i	1	2.46	1	1638939600
 ~ $ tunnel due letters
@@ -172,11 +180,11 @@ h	i	1	2.46	1	1638939600
 
 ``due``'s syntax is ``tunnel due <deck filename>``. It will iterate over the
 lines in the deck file and print those that are scheduled for review. This is
-determined by looking at the inter-repetition interval and the last review
-date. The numbers spit out are the line numbers of each card, which you
-should provide to ``front``, ``back``, and ``review``. If you add new cards
-after ``due``ing but before reviewing, you should rerun ``due``; the old
-numbers may be inaccurate now.
+determined by looking at the inter-repetition interval and the last review date.
+The numbers spit out are the line numbers of each card, which you should provide
+to ``front``, ``back``, and ``review``. If you add new cards after ``due``ing
+but before reviewing, you should rerun ``due``; the old numbers may be
+inaccurate now.
 
 #### ``front`` and ``back``
 ```sh
@@ -194,15 +202,16 @@ Error: line 2 is not a valid card.
 Error: no line 3 in deck.
 ```
 The syntax here is ``tunnel <front|back> <card line number> <deck filename>``.
-``front`` will print the first tab-separated value in the card, which is the front
-of the card, and ``back`` will print the second tab-separated value, which is the back.
+``front`` will print the first tab-separated value in the card, which is the
+front of the card, and ``back`` will print the second tab-separated value, which
+is the back.
 
 #### ``review``
 ```sh
-~ $ date
-Thu Dec  9 05:45:13 PM EST 2021
+~ $ date +%s
+1639089913
 ~ $ cat letters
-a	b	0	2.5	0	1617249600
+a	b	0	2.5	0	1639089912
 c	d	5	3	132	1637470800
 e
 ~ $ tunnel due letters
