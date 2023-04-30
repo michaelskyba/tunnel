@@ -1,0 +1,12 @@
+#!/usr/bin/python
+line = input()
+assert line.count("[") == line.count("]")
+
+open = -1
+while True:
+    open = line.find("[", open + 1)
+    if open == -1:
+        break
+
+    close = line.find("]", open + 1)
+    print(line[:open] + "[]" + line[close + 1 :] + "\t" + line[open + 1 : close])
