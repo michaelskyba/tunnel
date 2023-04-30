@@ -15,8 +15,7 @@ Shovel should work too, but I also haven't done many tests.
 ```sh
 git clone https://github.com/michaelskyba/tunnel.git
 cd tunnel
-su -c "go build -buildvcs=false -C src -o /usr/local/bin/tunnel"
-su -c "cp util/* /usr/local/bin/" # Only if you care about e.g. shovel
+su -c "./install util" # Remove "util" argument if util/* is unneeded
 ```
 
 ## Usage

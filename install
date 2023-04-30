@@ -1,0 +1,7 @@
+#!/bin/sh
+go build -buildvcs=false -C src -o /usr/local/bin/tunnel
+
+if [ "$1" = util ]
+then
+	cp util/* /usr/local/bin/
+fi
