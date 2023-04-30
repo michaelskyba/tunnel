@@ -54,7 +54,6 @@ func updateRetry(filename, deckIndex string, grade int) {
 
 	// If the line is already there, we need to add it to the next retry cycle
 	for i, line := range lines {
-
 		if line == "-" {
 			if !secondCycle {
 				secondCycle = true
@@ -66,7 +65,6 @@ func updateRetry(filename, deckIndex string, grade int) {
 		}
 
 		if line == deckIndex {
-
 			// It's impossible to have more than two retry cycles by default.
 			// So, if we're seeing the line number in the retry cycle, it has
 			// to be in the first cycle, not the second cycle.
@@ -93,7 +91,6 @@ func updateRetry(filename, deckIndex string, grade int) {
 	}
 
 	if cardFound {
-
 		// We're moving the line to the second cycle, so we
 		// want to remove it from the first cycle
 		lines = append(lines[:retryIndex], lines[retryIndex+1:]...)

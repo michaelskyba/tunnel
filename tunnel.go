@@ -1,8 +1,6 @@
 package main
 
-import (
-	"os"
-)
+import "os"
 
 func main() {
 	length := len(os.Args)
@@ -14,7 +12,6 @@ func main() {
 	validateCommand(commandName, length)
 
 	switch commandName {
-
 	case "new_cards":
 		// filename
 		newCards(os.Args[2])

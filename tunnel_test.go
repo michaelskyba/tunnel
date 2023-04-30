@@ -1,10 +1,7 @@
 package main
 
-import (
-	"testing"
-)
+import "testing"
 
-// Camel case forced
 func TestNewCard(tests *testing.T) {
 	type test struct {
 		Input  string

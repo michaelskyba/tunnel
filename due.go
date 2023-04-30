@@ -10,7 +10,6 @@ import (
 )
 
 func isCardDue(card string, currentTime int) bool {
-
 	// To be due, (last review date) + (inter-repetition interval)
 	// has to be before (current date)
 

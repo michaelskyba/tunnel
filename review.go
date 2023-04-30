@@ -10,7 +10,6 @@ import (
 )
 
 func reviewCard(card string, grade, currentTime int) string {
-
 	if grade < 0 || grade > 5 {
 		printError(fmt.Sprintf("Error: invalid grade '%v'.\n", grade))
 	}
@@ -34,7 +33,6 @@ func reviewCard(card string, grade, currentTime int) string {
 
 	// SM-2
 	if grade >= 3 {
-
 		if n == 0 {
 			I = 1
 		} else if n == 1 {
@@ -42,9 +40,7 @@ func reviewCard(card string, grade, currentTime int) string {
 		} else {
 			I = int(math.Round(float64(I) * EF))
 		}
-
 		n++
-
 	} else {
 		n = 0
 		I = 1
@@ -103,7 +99,6 @@ func reviewDeck(indexStr, gradeStr, filename string) {
 			}
 
 			if isRetry || (isDue && grade < 4) {
-
 				// There's no DRY benefit to having this as a function
 				// but I feel like it makes the contents of this switch case
 				// quite a bit more organized. Feel free to bully me if this

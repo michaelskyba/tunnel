@@ -49,7 +49,6 @@ func printError(message string) {
 }
 
 func getLine(filename string, target int) string {
-
 	// O(n) time; don't use getLine in a loop
 
 	if target >= 0 {
