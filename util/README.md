@@ -20,3 +20,11 @@ The [] of an angle in [standard position] is placed [in any direction, depending
 The [terminal arm] of an angle in [] is placed [in any direction, depending on the measurement of the angle]	standard position
 The [terminal arm] of an angle in [standard position] is placed []	in any direction, depending on the measurement of the angle
 ```
+
+## ``tunnel.kak``
+A sample configuration for Kakoune is provided in ``tunnel.kak``, which is
+similar to what I use.
+
+Here is a screenshot of the higlighting, with the terminal colours set by pywal:
+
+![Kakoune screenshot](https://raw.githubusercontent.com/michaelskyba/tunnel/main/util/kak-screenshot.png)
