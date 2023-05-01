@@ -39,6 +39,9 @@ an example deck file, is provided, which I will use here.
 ~/tunnel $ tunnel new_cards example_deck
 ```
 
+If you have many cards, consider spreading them over multiple days using
+``util/spread``.
+
 #### 3. Use ``due`` to determine which cards need to be reviewed.
 ```
 ~/tunnel $ tunnel due example_deck

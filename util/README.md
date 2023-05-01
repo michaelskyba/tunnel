@@ -28,3 +28,25 @@ similar to what I use.
 Here is a screenshot of the higlighting, with the terminal colours set by pywal:
 
 ![Kakoune screenshot](https://raw.githubusercontent.com/michaelskyba/tunnel/main/util/kak-screenshot.png)
+
+## ``spread``
+```sh
+~ $ cat deck
+a	b	0	2.5	0	1682905209
+c	d	0	2.5	0	1682905209
+e	f	0	2.5	0	1682905209
+g	h	0	2.5	0	1682905209
+~ $ date
+1682905210
+~ $ spread 2 deck
+~ $ cat deck
+a	b	0	2.5	0	1682905209
+c	d	0	2.5	0	1682991609
+e	f	0	2.5	0	1682948409
+g	h	0	2.5	0	1683034809
+```
+
+``spread``'s syntax is ``spread <days> <deck filename>``. It will modify the
+last review placeholder dates and randomly spread them out over <days> days.
+Make sure that you have already run ``tunnel new_cards`` on the cards you want
+to modify.

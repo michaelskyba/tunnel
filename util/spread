@@ -1,0 +1,57 @@
+#!/usr/bin/python
+from random import shuffle
+from sys import argv
+from time import time
+
+assert len(argv) == 3
+days = int(argv[1])
+filename = argv[2]
+
+with open(filename) as f:
+    lines = f.readlines()
+
+new_cards = []
+
+for i, line in enumerate(lines):
+    split = line.split("\t")
+
+    # Not a card
+    if len(split) != 6:
+        continue
+
+    # A card but not new (repetition count > 0)
+    if split[2] != "0":
+        continue
+
+    new_cards.append(i)
+
+num_cards = len(new_cards)
+if num_cards == 0:
+    exit()
+
+current_time = int(time())
+seconds_per_day = 24 * 60 * 60
+maximum = current_time + days * seconds_per_day
+time_range = maximum - current_time
+spread = int(time_range / num_cards)
+
+times = []
+
+review_time = current_time
+for i in range(num_cards):
+    times.append(review_time - 1)
+    review_time += spread
+
+shuffle(times)
+
+for i, line_index in enumerate(new_cards):
+    line = lines[line_index]
+    split = line.split("\t")
+
+    # 5: Last review TSV column
+    split[5] = str(times[i]) + "\n"
+
+    lines[line_index] = "\t".join(split)
+
+with open(filename, "w") as f:
+    f.writelines(lines)
