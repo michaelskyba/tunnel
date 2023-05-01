@@ -47,6 +47,6 @@ g	h	0	2.5	0	1683034809
 ```
 
 ``spread``'s syntax is ``spread <days> <deck filename>``. It will modify the
-last review placeholder dates and randomly spread them out over <days> days.
+last review placeholder dates and randomly spread them out over ``<days>`` days.
 Make sure that you have already run ``tunnel new_cards`` on the cards you want
 to modify.
