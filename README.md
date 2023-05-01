@@ -35,12 +35,12 @@ Read the [deck file](#deck-file) section to understand the syntax. ``example_dec
 an example deck file, is provided, which I will use here.
 
 #### 2. Use ``new_cards`` to format new cards.
-```sh
+```
 ~/tunnel $ tunnel new_cards example_deck
 ```
 
 #### 3. Use ``due`` to determine which cards need to be reviewed.
-```sh
+```
 ~/tunnel $ tunnel due example_deck
 0
 2
@@ -49,7 +49,7 @@ an example deck file, is provided, which I will use here.
 
 #### 4. Use ``review`` to review each due card.
 Use ``front`` and ``back`` to see the fronts and backs of the respective cards.
-```sh
+```
 ~/tunnel $ tunnel front 0 example_deck
 Symbol: Gold
 ~/tunnel $ # The user can't remember
@@ -58,7 +58,7 @@ Au
 ~/tunnel $ # Now the answer seems obvious and familiar ("Oh, right, it's Au!")
 ~/tunnel $ tunnel review 0 2 example_deck
 ```
-```sh
+```
 ~/tunnel $ tunnel front 2 example_deck
 Symbol: Silver
 ~/tunnel $ # The user thinks for a second and then remembers
@@ -66,7 +66,7 @@ Symbol: Silver
 Ag
 ~/tunnel $ tunnel review 2 4 example_deck
 ```
-```sh
+```
 ~/tunnel $ tunnel front 3 example_deck
 Symbol: Carbon
 ~/tunnel $ # The user remembered instantly
@@ -80,11 +80,11 @@ After going through the initial set of due cards, use ``retry`` to see which
 cards need to be retried. Repeat this process with ``retry`` after each set of
 reviews until there are no more cards to review. You'll have to review a card
 again if you score below 4, so you can't skip ``retry`` or only use it once.
-```sh
+```
 ~/tunnel $ tunnel retry example_deck
 0
 ```
-```sh
+```
 ~/tunnel $ tunnel front 0 example_deck
 Symbol: Gold
 ~/tunnel $ # The user remembered instantly
@@ -144,7 +144,7 @@ it only checks the first two TSV fields.
 only checks the associated retry file.
 
 #### ``new_cards``
-```sh
+```
 ~ $ cat deck
 a	b
 c	d
@@ -164,7 +164,7 @@ appends:
 ```
 
 #### ``due``
-```sh
+```
 ~ $ date +%s
 1639080291
 ~ $ cat letters
@@ -187,7 +187,7 @@ but before reviewing, you should rerun ``due``; the old numbers may be
 inaccurate now.
 
 #### ``front`` and ``back``
-```sh
+```
 ~ $ cat letters
 a	b	1	2.46	1	1638939600
 c	d
@@ -207,7 +207,7 @@ front of the card, and ``back`` will print the second tab-separated value, which
 is the back.
 
 #### ``review``
-```sh
+```
 ~ $ date +%s
 1639089913
 ~ $ cat letters
@@ -247,7 +247,7 @@ If you need to review a set of cards outside of their regular schedule, copy
 them into a new, temporary deck and study that one.
 
 #### ``retry``
-```sh
+```
 ~ $ tunnel retry geography
 ~ $ tunnel due geography
 0
