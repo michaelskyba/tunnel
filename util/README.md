@@ -28,3 +28,25 @@ similar to what I use.
 Here is a screenshot of the higlighting, with the terminal colours set by pywal:
 
 ![Kakoune screenshot](https://raw.githubusercontent.com/michaelskyba/tunnel/main/util/kak-screenshot.png)
+
+## ``spread``
+```sh
+~ $ cat deck
+a	b	0	2.5	0	1682869324
+c	d	0	2.5	0	1682869324
+e	f	0	2.5	0	1682869324
+g	h	0	2.5	0	1682869324
+~ $ date
+1682869325
+~ $ spread 2 deck
+~ $ cat deck
+a	b	0	2.5	0	1682955725
+c	d	0	2.5	0	1682869324
+e	f	0	2.5	0	1682955725
+g	h	0	2.5	0	1682869324
+```
+
+``spread``'s syntax is ``spread <days> <deck filename>``. It will modify the
+last review placeholder dates and randomly spread them out over <days> days. As
+shown, if, for example, you have four new cards and want to spread them out over
+two days, two of the cards will be due today and two will be due tomorrow.
