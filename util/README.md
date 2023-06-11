@@ -21,6 +21,21 @@ The [terminal arm] of an angle in [] is placed [in any direction, depending on t
 The [terminal arm] of an angle in [standard position] is placed []	in any direction, depending on the measurement of the angle
 ```
 
+## ``decloze``
+``decloze`` takes one or more cards parsed using ``parse_cloze`` and reverts
+them back to their original cloze input. (I couldn't think of a better name.)
+
+```
+$ cat input
+The [] of an angle in [standard position] is placed [in any direction, depending on the measurement of the angle]	terminal arm
+The [terminal arm] of an angle in [] is placed [in any direction, depending on the measurement of the angle]	standard position
+The [terminal arm] of an angle in [standard position] is placed []	in any direction, depending on the measurement of the angle
+gcc stands for []	GNU Compiler Collection
+$ decloze < input
+The [terminal arm] of an angle in [standard position] is placed [in any direction, depending on the measurement of the angle]
+gcc stands for [GNU Compiler Collection]
+```
+
 ## ``tunnel.kak``
 A sample configuration for Kakoune is provided in ``tunnel.kak``, which is
 similar to what I use.

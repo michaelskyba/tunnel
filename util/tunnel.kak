@@ -1,6 +1,7 @@
 declare-user-mode tunnel
 map -docstring 'Tunnel [s]RS commands' global user s ":enter-user-mode tunnel<ret>"
-map -docstring "cloze deletion" global tunnel c "x|parse_cloze<ret>gh" # Cloze implementation
+map -docstring "cloze deletion" global tunnel c "x|parse_cloze<ret>gh"
+map -docstring "revert cloze deletion" global tunnel C "|decloze<ret>gh"
 
 # Tunnel deck highlighting
 hook global BufCreate ".*\.deck$" %{

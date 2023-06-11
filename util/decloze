@@ -1,0 +1,17 @@
+#!/usr/bin/python
+from sys import stdin
+
+declozes = []
+
+for cloze in stdin.readlines():
+    cloze = cloze.strip()
+
+    insert = cloze.find("[]")
+    tab = cloze.find("\t")
+    assert -1 not in [insert, tab], "Invalid input format"
+
+    decloze = cloze[: insert + 1] + cloze[tab + 1 :] + cloze[insert + 1 : tab]
+    if decloze not in declozes:
+        declozes.append(decloze)
+
+print("\n".join(declozes))
