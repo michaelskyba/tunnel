@@ -47,21 +47,28 @@ Here is a screenshot of the higlighting, with the terminal colours set by pywal:
 ## ``spread``
 ```sh
 ~ $ cat deck
-a	b	0	2.5	0	1682905209
-c	d	0	2.5	0	1682905209
-e	f	0	2.5	0	1682905209
-g	h	0	2.5	0	1682905209
+a	b	0	2.5	0	1688434760
+c	d	0	2.5	0	1688434760
+e	f	0	2.5	0	1688434760
+g	h	0	2.5	0	1688434760
 ~ $ date
-1682905210
+1688434761
 ~ $ spread 2 deck
 ~ $ cat deck
-a	b	0	2.5	0	1682905209
-c	d	0	2.5	0	1682991609
-e	f	0	2.5	0	1682948409
-g	h	0	2.5	0	1683034809
+a	b	0	2.5	0	1688434760
+c	d	0	2.5	0	1688564360
+e	f	0	2.5	0	1688521160
+g	h	0	2.5	0	1688477960
+~ $ spread 365 20 deck
+~ $ cat deck
+a	b	0	2.5	0	1719970760
+c	d	0	2.5	0	1720402760
+e	f	0	2.5	0	1721266760
+g	h	0	2.5	0	1720834760
 ```
 
-``spread``'s syntax is ``spread <days> <deck filename>``. It will modify the
-last review placeholder dates and randomly spread them out over ``<days>`` days.
-Make sure that you have already run ``tunnel new_cards`` on the cards you want
-to modify.
+``spread``'s syntax is ``spread [offset] <days> <deck filename>``. The initial
+introduction of cards will be spread out across ``<days>`` days. If an offset is
+provided, this will be from ``now + <offset>`` to ``now + <offset> + <days>``.
+Otherwise, it will be from now to ``now + <days>``. ``spread`` only applies to
+cards formatted with ``tunnel new_cards`` which have not been reviewed yet.

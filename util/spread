@@ -3,9 +3,16 @@ from random import shuffle
 from sys import argv
 from time import time
 
-assert len(argv) == 3
-days = int(argv[1])
-filename = argv[2]
+assert len(argv) >= 3 and len(argv) <= 4
+using_offset = len(argv) == 4
+
+if using_offset:
+    offset = int(argv[1])
+    days = int(argv[2])
+    filename = argv[3]
+else:
+    days = int(argv[1])
+    filename = argv[2]
 
 with open(filename) as f:
     lines = f.readlines()
@@ -31,13 +38,19 @@ if num_cards == 0:
 
 current_time = int(time())
 seconds_per_day = 24 * 60 * 60
-maximum = current_time + days * seconds_per_day
-time_range = maximum - current_time
+
+if using_offset:
+    start = current_time + offset * seconds_per_day
+else:
+    start = current_time
+
+end = start + days * seconds_per_day
+time_range = end - start
 spread = int(time_range / num_cards)
 
 times = []
 
-review_time = current_time
+review_time = start
 for i in range(num_cards):
     times.append(review_time - 1)
     review_time += spread
