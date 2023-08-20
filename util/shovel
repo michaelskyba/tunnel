@@ -66,10 +66,6 @@ check_usage() {
 	[ "$exists" ] &&
 		echo "$deck: Not a file" &&
 		exit 1
-
-	# I don't know if it's my computer but for some reason
-	# the script dies without an echo from check_usage
-	echo > /dev/null
 }
 
 
