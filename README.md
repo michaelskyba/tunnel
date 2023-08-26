@@ -136,7 +136,7 @@ last review. Since there haven't been any reviews for new cards, the date is set
 to one second before the card was created. As you review your cards, these
 values will be updated. If you want to modify a card's front or backside, feel
 free to edit the first two values (front and back), but do not manually change
-the others unless you have a good understand of their function.
+the others unless you have a good understanding of their function.
 
 ### Description of individual tunnel commands
 Note that commands only check for validity in the context of their own
